@@ -4,6 +4,7 @@ window.__WEEK_REVIEW__ = [{"title":"Stories: ST13 product - three frames","forma
     if (document.querySelector(".review-box")) return;
     var main = document.getElementById("view");
     if (!main) return;
+    if (main.querySelector(".device, .fb-card, .banner")) return;
     var items = window.__WEEK_REVIEW__;
     if (!items || !items.length) return;
     var html = '<div class="banner preview-banner"><h2>Week Preview</h2><p>Accept or Reject under every Instagram, Facebook, and TikTok mock.</p></div>';

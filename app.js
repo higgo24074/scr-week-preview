@@ -58,6 +58,12 @@ function fmtDay(d) {
   return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
 }
 
+function fmtTime(iso) {
+  const d = parseLocal(iso);
+  if (!d) return "Unscheduled";
+  return d.toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+
 function scheduleFor(post, channel) {
   const map = post.scheduledForByChannel;
   if (channel && map && map[channel]) return map[channel];
@@ -1147,5 +1153,9 @@ async function boot() {
 }
 
 boot().catch((err) => {
-  $("view").innerHTML = `<div class="banner"><h2>Desk needs the local server</h2><p>${esc(err.message)}. Double-click <code>Start Social Desk.bat</code>.</p></div>`;
+  const title = window.__DESK_STATIC__ ? "Preview failed to load" : "Desk needs the local server";
+  const hint = window.__DESK_STATIC__
+    ? "Close this tab and open the latest Preview link."
+    : "Double-click <code>Start Social Desk.bat</code>.";
+  $("view").innerHTML = `<div class="banner"><h2>${title}</h2><p>${esc(err.message)}. ${hint}</p></div>`;
 });
