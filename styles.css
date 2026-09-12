@@ -225,7 +225,16 @@ textarea { min-height: 120px; resize: vertical; }
   margin-bottom: 10px;
 }
 .review-box .actions { margin-top: 4px; }
-.review-box button[disabled] { opacity: 0.45; cursor: default; }
+.review-box .primary {
+  background: var(--forest);
+  color: #fbf6ec;
+  border-color: var(--forest);
+  min-width: 104px;
+}
+.review-box .ghost {
+  color: var(--danger);
+  border-color: var(--danger);
+}
 .review-box.accepted { border-color: var(--forest); }
 .review-box.turned-down { border-color: var(--danger); }
 .review-progress { margin: 0 0 8px; font-weight: 600; }
