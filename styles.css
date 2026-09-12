@@ -216,12 +216,12 @@ textarea { min-height: 120px; resize: vertical; }
 .preview-slot header { margin-bottom: 16px; }
 .preview-slot h3 { margin: 0 0 4px; font-size: 26px; }
 .review-box {
-  margin: 12px 0 8px;
+  margin: 12px 0 20px;
   padding: 16px;
   background: #fff;
   border: 3px solid var(--ink);
   max-width: 100%;
-  width: 320px;
+  width: 100%;
 }
 .review-box-title {
   margin: 0 0 6px;

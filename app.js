@@ -373,6 +373,7 @@ function renderPreview() {
                   ${p.mediaNotes ? `<p class="tiny">${esc(p.mediaNotes)}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
+                ${reviewBoxHtml(p, "top")}
                 <div class="phones">${shown
                   .map(
                     (ch) => `<div class="phone-col">
