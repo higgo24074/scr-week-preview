@@ -19,6 +19,7 @@ let saveTimer = null;
 let dirty = false;
 let completingReview = false;
 let reviewFlash = "";
+let dockPostId = null;
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -231,7 +232,7 @@ function reviewKind(post) {
   return post.format === "story" ? "story" : "post";
 }
 
-function reviewBoxHtml(post) {
+function reviewBoxHtml(post, slot) {
   const rev = ensureReview(post);
   const kind = reviewKind(post);
   const decided = rev.decision === "approved" || rev.decision === "rejected";
@@ -243,7 +244,7 @@ function reviewBoxHtml(post) {
       : rev.decision === "rejected"
         ? "Rejected - this item only. Waiting for every other post."
         : "This decision applies only to this " + kind + ", not the others.";
-  const slotId = "changes-" + esc(post.id);
+  const slotId = "changes-" + esc(post.id) + (slot ? "-" + esc(slot) : "");
   return `<div class="review-box ${boxClass}" data-review-for="${esc(post.id)}">
     <p class="review-box-title">Your decision on this ${esc(kind)} only</p>
     <p class="tiny"><strong>${esc(publicCopy(post.title))}</strong></p>
@@ -403,12 +404,12 @@ function renderPreview() {
                   ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
-                ${reviewBoxHtml(p)}
                 <div class="phones">${shown
                   .map(
-                    (ch) => `<div class="phone-col">
+                    (ch, i) => `<div class="phone-col">
                   <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
                   ${mockFor(p, ch)}
+                  ${i === 0 ? reviewBoxHtml(p, "slot") : ""}
                 </div>`
                   )
                   .join("")}</div>
@@ -719,17 +720,54 @@ function handleReviewInput(e) {
   persistStoredReviews();
 }
 
+function bindReviewDock() {
+  const dock = $("review-dock");
+  if (!dock) return;
+  if (view !== "preview") {
+    dock.hidden = true;
+    return;
+  }
+  const slots = [...document.querySelectorAll(".preview-slot[data-post-id]")];
+  if (!slots.length) {
+    dock.hidden = true;
+    return;
+  }
+  if (!dockPostId) dockPostId = slots[0].getAttribute("data-post-id");
+  const post = weekPosts().find((p) => p.id === dockPostId) || weekPosts()[0];
+  if (!post) {
+    dock.hidden = true;
+    return;
+  }
+  dock.hidden = false;
+  dock.innerHTML = reviewBoxHtml(post, "dock");
+  if (window.__reviewObserver) window.__reviewObserver.disconnect();
+  if (!("IntersectionObserver" in window)) return;
+  window.__reviewObserver = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const id = visible.target.getAttribute("data-post-id");
+      if (!id || id === dockPostId) return;
+      dockPostId = id;
+      const next = weekPosts().find((p) => p.id === id);
+      if (next) dock.innerHTML = reviewBoxHtml(next, "dock");
+    },
+    { threshold: [0.2, 0.4, 0.7] }
+  );
+  slots.forEach((slot) => window.__reviewObserver.observe(slot));
+}
+
 function bindView() {
   const approve = $("approve-week");
   const reject = $("reject-week");
   if (approve) approve.addEventListener("click", approveWeek);
   if (reject) reject.addEventListener("click", rejectWeek);
-  const root = $("view");
-  if (root && root.dataset.reviewClicks !== "1") {
-    root.dataset.reviewClicks = "1";
-    root.addEventListener("click", handleReviewClick);
-    root.addEventListener("input", handleReviewInput);
+  if (document.body.dataset.reviewClicks !== "1") {
+    document.body.dataset.reviewClicks = "1";
+    document.body.addEventListener("click", handleReviewClick);
+    document.body.addEventListener("input", handleReviewInput);
   }
+  bindReviewDock();
   document.querySelectorAll(".story-phone").forEach((phone) => {
     phone.addEventListener("click", () => advanceStory(phone));
   });
