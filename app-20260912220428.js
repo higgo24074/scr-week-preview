@@ -179,7 +179,12 @@ function mergeStoredReviews() {
     if (!raw) return;
     const map = JSON.parse(raw);
     weekPosts().forEach((p) => {
-      if (map[p.id]) p.review = { ...(p.review || {}), ...map[p.id] };
+      if (!map[p.id]) return;
+      const stored = map[p.id];
+      p.review = { ...(p.review || {}), ...stored };
+      if (stored.channels && typeof stored.channels === "object") {
+        p.review.channels = JSON.parse(JSON.stringify(stored.channels));
+      }
     });
   } catch (e) {}
 }
@@ -187,12 +192,19 @@ function mergeStoredReviews() {
 function isolateReviews() {
   (state.posts || []).forEach((p) => {
     const src = p.review && typeof p.review === "object" ? p.review : {};
+    const chans = {};
+    const srcChans = src.channels && typeof src.channels === "object" ? src.channels : {};
+    Object.keys(srcChans).forEach((k) => {
+      const c = srcChans[k] || {};
+      chans[k] = { decision: c.decision || null, changes: c.changes || "", decidedAt: c.decidedAt || null };
+    });
     p.review = {
       decision: src.decision || null,
       changes: src.changes || "",
       round: Number(src.round) || 1,
       decidedAt: src.decidedAt || null,
       appliedAt: src.appliedAt || null,
+      channels: chans,
     };
   });
 }
@@ -207,18 +219,71 @@ function persistStoredReviews() {
 }
 
 function ensureReview(post) {
-  if (!post.review) post.review = { decision: null, changes: "", round: 1, decidedAt: null };
+  if (!post.review) post.review = { decision: null, changes: "", round: 1, decidedAt: null, channels: {} };
+  if (!post.review.channels || typeof post.review.channels !== "object") post.review.channels = {};
   return post.review;
 }
 
+function reviewChannels(post) {
+  const list = (post.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
+  return list.length ? list : ["instagram"];
+}
+
+function reviewKey(postId, channel) {
+  return postId + "::" + channel;
+}
+
+function parseReviewKey(id) {
+  const raw = String(id || "");
+  const i = raw.indexOf("::");
+  if (i < 0) return { postId: raw, channel: "" };
+  return { postId: raw.slice(0, i), channel: raw.slice(i + 2) };
+}
+
+function ensureChannelReview(post, channel) {
+  const root = ensureReview(post);
+  if (!root.channels[channel]) root.channels[channel] = { decision: null, changes: "", decidedAt: null };
+  return root.channels[channel];
+}
+
+function syncPostDecision(post) {
+  const chans = reviewChannels(post);
+  const revs = chans.map((ch) => ensureChannelReview(post, ch));
+  if (revs.some((r) => r.decision !== "approved" && r.decision !== "rejected")) {
+    post.review.decision = null;
+    return;
+  }
+  const rejected = revs.filter((r) => r.decision === "rejected");
+  if (rejected.length) {
+    post.review.decision = "rejected";
+    post.review.changes = rejected.map((r) => String(r.changes || "").trim()).filter(Boolean).join(" | ");
+    post.review.decidedAt = new Date().toISOString();
+  } else {
+    post.review.decision = "approved";
+    post.review.changes = "";
+    post.review.decidedAt = new Date().toISOString();
+  }
+}
+
+function reviewTargets() {
+  const items = [];
+  weekPosts().forEach((p) => {
+    reviewChannels(p).forEach((ch) => items.push({ post: p, channel: ch }));
+  });
+  return items;
+}
+
 function reviewProgress() {
-  const posts = weekPosts();
-  const decided = posts.filter((p) => p.review && (p.review.decision === "approved" || p.review.decision === "rejected"));
+  const items = reviewTargets();
+  const decided = items.filter(({ post, channel }) => {
+    const d = post.review?.channels?.[channel]?.decision;
+    return d === "approved" || d === "rejected";
+  });
   return {
-    total: posts.length,
+    total: items.length,
     decided: decided.length,
-    approved: posts.filter((p) => p.review && p.review.decision === "approved").length,
-    rejected: posts.filter((p) => p.review && p.review.decision === "rejected").length,
+    approved: items.filter(({ post, channel }) => post.review?.channels?.[channel]?.decision === "approved").length,
+    rejected: items.filter(({ post, channel }) => post.review?.channels?.[channel]?.decision === "rejected").length,
   };
 }
 
@@ -231,28 +296,30 @@ function reviewKind(post) {
   return post.format === "story" ? "story" : "post";
 }
 
-function reviewBoxHtml(post, slot) {
-  const rev = ensureReview(post);
+function reviewBoxHtml(post, channel) {
+  const rev = ensureChannelReview(post, channel);
   const kind = reviewKind(post);
+  const label = channelName(channel) + " " + kind;
+  const key = reviewKey(post.id, channel);
   const decided = rev.decision === "approved" || rev.decision === "rejected";
   const locked = allPostsDecided();
   const boxClass = rev.decision === "approved" ? "accepted" : rev.decision === "rejected" ? "turned-down" : "";
   const status =
     rev.decision === "approved"
-      ? "Accepted - this item only"
+      ? "Accepted - this " + label + " only"
       : rev.decision === "rejected"
-        ? "Rejected - this item only. Waiting for every other post."
-        : "This decision applies only to this " + kind + ", not the others.";
-  const slotId = "changes-" + esc(post.id) + (slot ? "-" + esc(slot) : "");
-  return `<div class="review-box ${boxClass}" data-review-for="${esc(post.id)}">
-    <p class="review-box-title">Your decision on this ${esc(kind)} only</p>
+        ? "Rejected - this " + label + " only. Waiting for every other item."
+        : "This Accept or Reject applies only to this " + label + ".";
+  const slotId = "changes-" + esc(post.id) + "-" + esc(channel);
+  return `<div class="review-box ${boxClass}" data-review-for="${esc(key)}">
+    <p class="review-box-title">Accept or Reject this ${esc(label)}</p>
     <p class="tiny"><strong>${esc(publicCopy(post.title))}</strong></p>
     <p class="tiny">${esc(status)}</p>
     <label for="${slotId}">Suggested change</label>
-    <textarea id="${slotId}" data-changes="${esc(post.id)}" ${locked ? "disabled" : ""} placeholder="Required if you reject. Paste the caption you want, or say what to change.">${esc(rev.changes || "")}</textarea>
+    <textarea id="${slotId}" data-changes="${esc(key)}" ${locked ? "disabled" : ""} placeholder="Required if you reject. Paste the caption you want, or say what to change.">${esc(rev.changes || "")}</textarea>
     <div class="actions">
-      <button type="button" class="primary" data-approve="${esc(post.id)}" ${locked || rev.decision === "approved" ? "disabled" : ""}>Accept this ${esc(kind)}</button>
-      <button type="button" class="ghost" data-reject="${esc(post.id)}" ${locked || rev.decision === "rejected" ? "disabled" : ""}>Reject this ${esc(kind)}</button>
+      <button type="button" class="primary" data-approve="${esc(key)}" ${locked || rev.decision === "approved" ? "disabled" : ""}>Accept</button>
+      <button type="button" class="ghost" data-reject="${esc(key)}" ${locked || rev.decision === "rejected" ? "disabled" : ""}>Reject</button>
       ${
         decided
           ? `<span class="pill ${rev.decision === "approved" ? "accepted" : "turned-down"}">${esc(rev.decision)}</span>`
@@ -384,7 +451,7 @@ function renderPreview() {
     <div class="banner preview-banner">
       <div>
         <h2>Week of ${esc(week.weekStart || "-")} - as it will look</h2>
-        <p>Accept or Reject each post or story. If you reject, write the change in the box. A follow-up text is sent only after every post has a decision, and only if something was rejected.</p>
+        <p>Accept or Reject sits under every Instagram, Facebook, and TikTok mock. Rejecting one does not change the others. A follow-up text is sent only after every item has a decision, and only if something was rejected.</p>
         <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " - " + remaining + " left" : " - all decided"}</p>
         ${reviewFlash ? `<p class="tiny">${esc(reviewFlash)}</p>` : ""}
         <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " - texts already sent to Graham and Stuart" : ""} - test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
@@ -394,8 +461,7 @@ function renderPreview() {
       posts.length
         ? posts
             .map((p) => {
-              const channels = (p.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
-              const shown = channels.length ? channels : ["instagram"];
+              const shown = reviewChannels(p);
               return `<section class="preview-slot" data-post-id="${esc(p.id)}">
                 <header>
                   <h3 class="serif">${esc(publicCopy(p.title))}</h3>
@@ -403,26 +469,15 @@ function renderPreview() {
                   ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
-                <div class="phones">
-                  <div class="phone-col">
-                    <p class="phone-label">${esc(channelName(shown[0]))} ${p.format === "story" ? "story" : "post"}</p>
-                    ${mockFor(p, shown[0])}
-                  </div>
-                </div>
-                ${reviewBoxHtml(p, "slot")}
-                ${
-                  shown.length > 1
-                    ? `<div class="phones extra-phones">${shown
-                        .slice(1)
-                        .map(
-                          (ch) => `<div class="phone-col">
-                    <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
-                    ${mockFor(p, ch)}
-                  </div>`
-                        )
-                        .join("")}</div>`
-                    : ""
-                }
+                ${shown
+                  .map(
+                    (ch) => `<div class="preview-item" data-review-item="${esc(reviewKey(p.id, ch))}">
+                  <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
+                  ${mockFor(p, ch)}
+                  ${reviewBoxHtml(p, ch)}
+                </div>`
+                  )
+                  .join("")}
               </section>`;
             })
             .join("")
@@ -432,17 +487,37 @@ function renderPreview() {
 }
 
 function applyRejectedCopy(post) {
-  const notes = String(post.review?.changes || "").trim();
-  if (!notes) return;
-  post.requestedChanges = notes;
-  post.approvalNotes = "Rejected change: " + notes;
-  const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
-  if (looksCaption) {
-    post.body = notes;
-    if (!post.variants) post.variants = {};
-    (post.channels || []).forEach((ch) => {
+  ensureReview(post);
+  const rejectedNotes = [];
+  reviewChannels(post).forEach((ch) => {
+    const rev = ensureChannelReview(post, ch);
+    if (rev.decision !== "rejected") return;
+    const notes = String(rev.changes || "").trim();
+    if (!notes) return;
+    rejectedNotes.push(channelName(ch) + ": " + notes);
+    const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
+    if (looksCaption) {
+      if (!post.variants) post.variants = {};
       post.variants[ch] = notes;
-    });
+    }
+    rev.decision = null;
+    rev.changes = "";
+    rev.decidedAt = null;
+  });
+  const notes = rejectedNotes.join(" | ") || String(post.review.changes || "").trim();
+  if (notes) {
+    post.requestedChanges = notes;
+    post.approvalNotes = "Rejected change: " + notes;
+    if (!rejectedNotes.length) {
+      const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
+      if (looksCaption) {
+        post.body = notes;
+        if (!post.variants) post.variants = {};
+        (post.channels || []).forEach((ch) => {
+          post.variants[ch] = notes;
+        });
+      }
+    }
   }
   post.review.decision = null;
   post.review.changes = "";
@@ -453,10 +528,11 @@ function applyRejectedCopy(post) {
 function reviewSmsBody(rejected) {
   const weekStart = state.approval?.week?.weekStart || "";
   const lines = [`SCR REVIEW ${weekStart}`];
-  weekPosts().forEach((p) => {
-    const d = p.review?.decision === "rejected" ? "REJECT" : "APPROVE";
-    const extra = d === "REJECT" ? " " + String(p.review.changes || "").replace(/\s+/g, " ").trim() : "";
-    lines.push(`${p.id} ${d}${extra}`.trim());
+  reviewTargets().forEach(({ post, channel }) => {
+    const rev = ensureChannelReview(post, channel);
+    const d = rev.decision === "rejected" ? "REJECT" : "APPROVE";
+    const extra = d === "REJECT" ? " " + String(rev.changes || "").replace(/\s+/g, " ").trim() : "";
+    lines.push(`${reviewKey(post.id, channel)} ${d}${extra}`.trim());
   });
   return lines.join("\n").slice(0, 1400);
 }
@@ -538,24 +614,26 @@ async function saveStateNow() {
 }
 
 async function decidePost(id, decision, sourceEl) {
-  id = String(id || "").trim();
-  const post = weekPosts().find((p) => p.id === id);
+  const parsed = parseReviewKey(id);
+  const post = weekPosts().find((p) => p.id === parsed.postId);
   if (!post) return;
+  const channel = parsed.channel || reviewChannels(post)[0];
   let changes = "";
   if (sourceEl) {
     const root = sourceEl.closest(".review-box");
     const box = root && root.querySelector("[data-changes]");
-    if (box && box.getAttribute("data-changes") === id) changes = String(box.value || "").trim();
+    if (box && box.getAttribute("data-changes") === reviewKey(post.id, channel)) changes = String(box.value || "").trim();
   }
-  if (!changes) changes = String(ensureReview(post).changes || "").trim();
+  const rev = ensureChannelReview(post, channel);
+  if (!changes) changes = String(rev.changes || "").trim();
   if (decision === "rejected" && !changes) {
-    window.alert("Write a suggested change in the box before rejecting this post.");
+    window.alert("Write a suggested change in the box before rejecting this item.");
     return;
   }
-  const rev = ensureReview(post);
   rev.decision = decision;
   rev.changes = changes;
   rev.decidedAt = new Date().toISOString();
+  syncPostDecision(post);
   persistStoredReviews();
   if (!window.__DESK_STATIC__) queueSave();
   render();
@@ -723,10 +801,11 @@ function handleReviewClick(e) {
 function handleReviewInput(e) {
   const el = e.target.closest("[data-changes]");
   if (!el) return;
-  const id = el.getAttribute("data-changes");
-  const post = weekPosts().find((p) => p.id === id);
+  const parsed = parseReviewKey(el.getAttribute("data-changes"));
+  const post = weekPosts().find((p) => p.id === parsed.postId);
   if (!post) return;
-  ensureReview(post).changes = el.value;
+  const channel = parsed.channel || reviewChannels(post)[0];
+  ensureChannelReview(post, channel).changes = el.value;
   persistStoredReviews();
 }
 

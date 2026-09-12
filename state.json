@@ -16,12 +16,12 @@
                      "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
                      "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1. Trawl media@southcoastrods.com for new catch reports and product shots (scripts/trawl-media-inbox.ps1). media@ is Google Workspace - open it with Gmail IMAP from MX, not Office 365 Graph. Never a sign-in prompt. Never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures plus any new media@ product shots. Do not name Graham or Stuart in a post unless it is a catch report. Then SMS both. They Accept or Reject each post on Preview. A follow-up text is sent only after every post has a decision, and only if something was rejected.",
                      "hostedPreviewUrl":  "https://higgo24074.github.io/scr-week-preview/",
-                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview/",
+                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview",
                      "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories. Preview: {previewUrl} Accept or Reject each post there. We only text again after every post is decided, and only if you asked for changes.",
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
-                                  "smsSentAt":  "2026-09-12T19:20:20.6856589Z",
+                                  "smsSentAt":  "2026-09-12T20:52:09.9382243Z",
                                   "sendSmsAfterRevision":  false,
                                   "signOff":  null,
                                   "notes":  "Format-check SMS requested 12 Sep evening. Per-post Accept/Reject on Preview. Follow-up text only after every post is decided, and only if something was rejected."
