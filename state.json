@@ -16,15 +16,20 @@
                      "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
                      "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1. Trawl media@southcoastrods.com for new catch reports and product shots (scripts/trawl-media-inbox.ps1). media@ is Google Workspace - open it with Gmail IMAP from MX, not Office 365 Graph. Never a sign-in prompt. Never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures plus any new media@ product shots. Do not name Graham or Stuart in a post unless it is a catch report. Then SMS both. They Accept or Reject each post on Preview. A follow-up text is sent only after every post has a decision, and only if something was rejected.",
                      "hostedPreviewUrl":  "https://higgo24074.github.io/scr-week-preview/",
-                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview",
+                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview/",
                      "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories. Preview: {previewUrl} Accept or Reject each post there. We only text again after every post is decided, and only if you asked for changes.",
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
                                   "smsSentAt":  "2026-09-12T20:52:09.9382243Z",
-                                  "sendSmsAfterRevision":  false,
-                                  "signOff":  null,
-                                  "notes":  "Format-check SMS requested 12 Sep evening. Per-post Accept/Reject on Preview. Follow-up text only after every post is decided, and only if something was rejected."
+                                  "sendSmsAfterRevision":  true,
+                                  "signOff":  {
+                                                  "who":  "preview",
+                                                  "when":  "2026-09-12T21:28:04.1665173Z",
+                                                  "decision":  "reject",
+                                                  "notes":  "p-story-st13, p-reel-st13-cast, p-cte-sponsors, p-invite-media-inbox"
+                                              },
+                                  "notes":  "Per-post review: 4 rejected and revised. Follow-up SMS after every post was decided."
                               },
                      "approvers":  [
                                        {
@@ -184,8 +189,8 @@
                                    ],
                       "body":  "ST13. 13ft 3.75lb. The casting tool in the range - carp rod first, distance when you need it. Cast over 200 metres on the field. Forgiveness in the tip so you are not bumping them under the rod.",
                       "variants":  {
-                                       "instagram":  "Frame 1: ST13 - 13ft 3.75lb\nFrame 2: Japanese Toray carbon. 1k reel seat.\nFrame 3: Not a light-lead through-action rod. ST10, ST12 or ST13?\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
-                                       "facebook":  "ST13 - 13ft 3.75lb, the casting tool in the SCR range.\n\nCarp rod first. Distance when you ask for it. The blank has been cast over 200 metres on the field, with a special taper that still forgives under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
+                                       "instagram":  "Frame 1: ST13 - 13ft 3.75lb\nFrame 2: 40T Japanese Toray carbon. 1k carbon reel seat.\nFrame 3: Carp rod first. Distance when you need it. ST10, ST12 or ST13?\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+                                       "facebook":  "ST13 - 13ft 3.75lb, the casting tool in the SCR range.\n\nCarp rod first. Distance when you ask for it. The blank has been cast over 200 metres on the field, with a special taper that still forgives under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrods #ST13 #SCRrods"
                                    },
                       "hashtags":  [
                                        "#southcoastrodsST13",
@@ -194,12 +199,32 @@
                                    ],
                       "cta":  "ST10, ST12 or ST13?",
                       "mediaNotes":  "9:16 stories from synced OneDrive bank shots only - no grey studio. Frame 1: media/products/onedrive/ST13.jpg. Frame 2: media/products/onedrive/st13-trio.jpg. Frame 3: media/products/onedrive/ST12.jpg. On-screen: ST13 / 13FT 3.75LB then THREE ON THE BANK then WHICH LENGTH?. Hold each frame 4-5s.",
-                      "approvalNotes":  "Official ST product images from SCR Drive. Price £369.99 only if asked - this story does not need a price.",
+                      "approvalNotes":  "Rejected change: instagram: Add 40 T to the front of Japanese Toray carbon. Add carbon to 1k reel seat. Change not a light-lead through action to something more relevant | facebook: On #southcoastrodsST13 separate the ST13 to its own #",
                       "assets":  [
                                      "media/products/onedrive/ST13.jpg",
                                      "media/products/onedrive/st13-trio.jpg",
                                      "media/products/onedrive/ST12.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "instagram":  {
+                                                                        "decision":  null,
+                                                                        "changes":  "",
+                                                                        "decidedAt":  null
+                                                                    },
+                                                      "facebook":  {
+                                                                       "decision":  null,
+                                                                       "changes":  "",
+                                                                       "decidedAt":  null
+                                                                   }
+                                                  },
+                                     "decision":  null,
+                                     "changes":  "",
+                                     "round":  2,
+                                     "appliedAt":  "2026-09-12T21:28:03.9445877Z",
+                                     "decidedAt":  null
+                                 },
+                      "requestedChanges":  "instagram: Add 40 T to the front of Japanese Toray carbon. Add carbon to 1k reel seat. Change not a light-lead through action to something more relevant | facebook: On #southcoastrodsST13 separate the ST13 to its own #"
                   },
                   {
                       "id":  "p-reel-st13-cast",
@@ -214,8 +239,8 @@
                                    ],
                       "body":  "The ST13 is the casting tool in the range. Carp fishing rod first - with the backbone to hit range when you need it. Over 200 metres on the casting field. Semi-fast special taper, progressive curve, power in the butt, forgiveness in the tip.",
                       "variants":  {
-                                       "instagram":  "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgives them under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
-                                       "tiktok":  "ST13. 13ft 3.75lb.\n\nCasting tool. Carp rod first.\n200m+ on the field.\nForgiveness still in the tip.\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
+                                       "instagram":  "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgiving under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+                                       "tiktok":  "ST13. 13ft 3.75lb.\n\nCasting tool. Carp rod first.\n200m+ on the field.\nForgiving in the tip.\n\n#southcoastrods #ST13 #SCRrods"
                                    },
                       "hashtags":  [
                                        "#southcoastrodsST13",
@@ -224,11 +249,31 @@
                                    ],
                       "cta":  "Shop ST13 at southcoastrods.com",
                       "mediaNotes":  "9:16, 12-15s. Bank shots only - no grey studio. Shot 1 (0-1s): onedrive/ST13.jpg, on-screen ST13. Shot 2: onedrive/st13-trio.jpg. Do not use CASTING---ST12.jpg on this ST13 post. No trending audio over the blank.",
-                      "approvalNotes":  "200 metres is a casting-field figure from the ST13 product page - keep that wording. Do not claim a customer hit 200m unless they said so.",
+                      "approvalNotes":  "Rejected change: instagram: Change forgives them to forgiving | tiktok: On #southcoastrodsST13 separate the ST13 to its own #. Change forgiveness still to forgiving in",
                       "assets":  [
                                      "media/products/onedrive/ST13.jpg",
                                      "media/products/onedrive/st13-trio.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "instagram":  {
+                                                                        "decision":  null,
+                                                                        "changes":  "",
+                                                                        "decidedAt":  null
+                                                                    },
+                                                      "tiktok":  {
+                                                                     "decision":  null,
+                                                                     "changes":  "",
+                                                                     "decidedAt":  null
+                                                                 }
+                                                  },
+                                     "decision":  null,
+                                     "changes":  "",
+                                     "round":  2,
+                                     "appliedAt":  "2026-09-12T21:28:04.0002653Z",
+                                     "decidedAt":  null
+                                 },
+                      "requestedChanges":  "instagram: Change forgives them to forgiving | tiktok: On #southcoastrodsST13 separate the ST13 to its own #. Change forgiveness still to forgiving in"
                   },
                   {
                       "id":  "p-story-st-ci",
@@ -254,12 +299,36 @@
                                    ],
                       "cta":  "ST or ST-Ci?",
                       "mediaNotes":  "9:16. Bank/water only. Frame 1: onedrive/ST12-Ci-set-up-2-.jpg with ST-CI on screen. Frame 2: onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg (guides over water). Frame 3: onedrive/SCR-ST12-Ci-branding-.JPG + ST OR ST-CI.",
-                      "approvalNotes":  "ST13-Ci is £399.99 on the shop. Do not put price on the story unless they ask.",
+                      "approvalNotes":  "ST13-Ci is Ã‚Â£399.99 on the shop. Do not put price on the story unless they ask.",
                       "assets":  [
                                      "media/products/onedrive/ST12-Ci-set-up-2-.jpg",
                                      "media/products/onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg",
                                      "media/products/onedrive/SCR-ST12-Ci-branding-.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "instagram":  {
+                                                                        "decision":  "approved",
+                                                                        "changes":  "",
+                                                                        "decidedAt":  "2026-09-12T21:25:21.3293636Z"
+                                                                    },
+                                                      "facebook":  {
+                                                                       "decision":  "approved",
+                                                                       "changes":  "",
+                                                                       "decidedAt":  "2026-09-12T21:25:21.3293636Z"
+                                                                   },
+                                                      "tiktok":  {
+                                                                     "decision":  "approved",
+                                                                     "changes":  "",
+                                                                     "decidedAt":  "2026-09-12T21:25:21.3378123Z"
+                                                                 }
+                                                  },
+                                     "decision":  "approved",
+                                     "changes":  "",
+                                     "round":  1,
+                                     "appliedAt":  null,
+                                     "decidedAt":  null
+                                 }
                   },
                   {
                       "id":  "p-st12-allrounder",
@@ -284,11 +353,30 @@
                                    ],
                       "cta":  "Which length are you on?",
                       "mediaNotes":  "4:5 crop of media/products/onedrive/SCR-ST12-set-up.jpg (bank, ST12 branding). Optional carousel: then onedrive/ST12-1-.jpg. On-screen: ST12 - 12FT 3.5LB. Do not use grey studio ST12 hero/reel-seat shots.",
-                      "approvalNotes":  "ST12 is £345.99. Caption does not need the price.",
+                      "approvalNotes":  "ST12 is Ã‚Â£345.99. Caption does not need the price.",
                       "assets":  [
                                      "media/products/onedrive/SCR-ST12-set-up.jpg",
                                      "media/products/onedrive/ST12-1-.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "facebook":  {
+                                                                       "decision":  "approved",
+                                                                       "changes":  "",
+                                                                       "decidedAt":  "2026-09-12T21:25:21.3420480Z"
+                                                                   },
+                                                      "instagram":  {
+                                                                        "decision":  "approved",
+                                                                        "changes":  "",
+                                                                        "decidedAt":  "2026-09-12T21:25:21.3420480Z"
+                                                                    }
+                                                  },
+                                     "decision":  "approved",
+                                     "changes":  "",
+                                     "round":  1,
+                                     "appliedAt":  null,
+                                     "decidedAt":  null
+                                 }
                   },
                   {
                       "id":  "p-cte-sponsors",
@@ -305,8 +393,8 @@
                       "body":  "South Coast Rods are official sponsors of Carp Team England. Same kit the squad take to the match. On the bank with the team - not just on the kit list.",
                       "variants":  {
                                        "instagram":  "Official sponsors of Carp Team England.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
-                                       "tiktok":  "Carp Team England.\nOfficial kit: SCR.\n\nOn the bank with the squad.\n\n#southcoastrods #SCRrods",
-                                       "facebook":  "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step - same blanks, same bank updates, same kit they take to the match.\n\n#southcoastrods #SCRrods"
+                                       "tiktok":  "Carp Team England.\nOfficial kit: SCR.\n\nOn the bank with the squad.\n\n#southcoastrods #SCRrods #carpteamengland",
+                                       "facebook":  "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step - same blanks, same kit they take to the match.\n\n#southcoastrods #SCRrods"
                                    },
                       "hashtags":  [
                                        "#southcoastrods",
@@ -314,10 +402,35 @@
                                    ],
                       "cta":  "Follow the squad updates on our page",
                       "mediaNotes":  "Use media/products/onedrive/st13-trio.jpg (three rods in the bivvy, bank light). Do not generate fake team photos. Do not invent match results.",
-                      "approvalNotes":  "Sponsorship is public (Angling Trust, Feb 2025, through 2027). Do not claim a 2026 gold unless they confirm it.",
+                      "approvalNotes":  "Rejected change: tiktok: Add #carpteamengland | facebook: Remove same bank updates",
                       "assets":  [
                                      "media/products/onedrive/st13-trio.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "instagram":  {
+                                                                        "decision":  "approved",
+                                                                        "changes":  "",
+                                                                        "decidedAt":  "2026-09-12T21:25:21.3455786Z"
+                                                                    },
+                                                      "tiktok":  {
+                                                                     "decision":  null,
+                                                                     "changes":  "",
+                                                                     "decidedAt":  null
+                                                                 },
+                                                      "facebook":  {
+                                                                       "decision":  null,
+                                                                       "changes":  "",
+                                                                       "decidedAt":  null
+                                                                   }
+                                                  },
+                                     "decision":  null,
+                                     "changes":  "",
+                                     "round":  2,
+                                     "appliedAt":  "2026-09-12T21:28:04.1011234Z",
+                                     "decidedAt":  null
+                                 },
+                      "requestedChanges":  "tiktok: Add #carpteamengland | facebook: Remove same bank updates"
                   },
                   {
                       "id":  "p-invite-media-inbox",
@@ -332,7 +445,7 @@
                                    ],
                       "body":  "If you have had a fish on an SCR rod, we want the catch report. Photo, weight, what happened. Send it to media@southcoastrods.com and we will put it on the desk.",
                       "variants":  {
-                                       "instagram":  "Frame 1: GOT A FISH ON SCR?\nFrame 2: Photo + weight + the story\nFrame 3: media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
+                                       "instagram":  "Frame 1: CAUGHT A FISH ON OUR SCR RODS?\nFrame 2: Photo + weight + the story\nFrame 3: media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
                                        "facebook":  "Catch reports keep this page alive.\n\nIf you have had one on an SCR rod, send the photo, the weight, and what happened to media@southcoastrods.com - we will get it on Instagram, Facebook and TikTok.\n\n#southcoastrods #SCRrods #carpstory"
                                    },
                       "hashtags":  [
@@ -342,10 +455,30 @@
                                    ],
                       "cta":  "Email media@southcoastrods.com",
                       "mediaNotes":  "9:16 type-led stories on a crop of media/products/onedrive/ST12-Ci-set-up-2-.jpg (jetty, water), dark overlay, large type. Facebook can be the same graphic as a 4:5 still.",
-                      "approvalNotes":  "This is the standing invite so the inbox actually fills.",
+                      "approvalNotes":  "Rejected change: instagram: Change got a fish to caught a fish on our SCR rods",
                       "assets":  [
                                      "media/products/onedrive/ST12-Ci-set-up-2-.jpg"
-                                 ]
+                                 ],
+                      "review":  {
+                                     "channels":  {
+                                                      "instagram":  {
+                                                                        "decision":  null,
+                                                                        "changes":  "",
+                                                                        "decidedAt":  null
+                                                                    },
+                                                      "facebook":  {
+                                                                       "decision":  "approved",
+                                                                       "changes":  "",
+                                                                       "decidedAt":  "2026-09-12T21:25:21.3455786Z"
+                                                                   }
+                                                  },
+                                     "decision":  null,
+                                     "changes":  "",
+                                     "round":  2,
+                                     "appliedAt":  "2026-09-12T21:28:04.1209696Z",
+                                     "decidedAt":  null
+                                 },
+                      "requestedChanges":  "instagram: Change got a fish to caught a fish on our SCR rods"
                   }
               ]
 }
