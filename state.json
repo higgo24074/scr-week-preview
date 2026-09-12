@@ -21,7 +21,7 @@
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
-                                  "smsSentAt":  "2026-09-12T17:04:52.7827554Z",
+                                  "smsSentAt":  "2026-09-12T19:20:20.6856589Z",
                                   "sendSmsAfterRevision":  false,
                                   "signOff":  null,
                                   "notes":  "Format-check SMS requested 12 Sep evening. Per-post Accept/Reject on Preview. Follow-up text only after every post is decided, and only if something was rejected."

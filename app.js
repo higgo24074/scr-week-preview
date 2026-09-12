@@ -62,7 +62,7 @@ function channelName(id) {
 
 async function loadState() {
   if (window.__DESK_STATIC__) {
-    const res = await fetch("state.json", { cache: "no-store" });
+    const res = await fetch("state.json" + (window.__DESK_BUILD__ ? "?v=" + window.__DESK_BUILD__ : ""), { cache: "no-store" });
     if (!res.ok) throw new Error("Could not load the hosted Preview");
     state = await res.json();
     dirty = false;
@@ -341,7 +341,6 @@ function renderPreview() {
                   ${p.mediaNotes ? `<p class="tiny">${esc(p.mediaNotes)}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
-                <div class="phones">${channels.map((ch) => `<div><p class="phone-label">${esc(channelName(ch))}</p>${mockFor(p, ch)}</div>`).join("")}</div>
                 <div class="review-box ${boxClass}">
                   <p class="tiny">${
                     rev.decision === "approved"
@@ -362,6 +361,7 @@ function renderPreview() {
                     }
                   </div>
                 </div>
+                <div class="phones">${channels.map((ch) => `<div><p class="phone-label">${esc(channelName(ch))}</p>${mockFor(p, ch)}</div>`).join("")}</div>
               </section>`;
             })
             .join("")

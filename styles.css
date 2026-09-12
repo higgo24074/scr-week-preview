@@ -215,10 +215,10 @@ textarea { min-height: 120px; resize: vertical; }
 .preview-slot header { margin-bottom: 16px; }
 .preview-slot h3 { margin: 0 0 4px; font-size: 26px; }
 .review-box {
-  margin-top: 18px;
+  margin: 12px 0 20px;
   padding: 14px 16px;
   background: var(--card);
-  border: 1px solid var(--rule);
+  border: 2px solid var(--ink);
 }
 .review-box textarea {
   min-height: 88px;
