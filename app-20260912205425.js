@@ -24,6 +24,20 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+function publicCopy(s) {
+  return String(s ?? "")
+    .replace(/\u00A0/g, " ")
+    .replace(/Â·/g, "-")
+    .replace(/â€”|â€“|â€‘/g, "-")
+    .replace(/â€˜|â€™/g, "'")
+    .replace(/â€œ|â€/g, '"')
+    .replace(/[–—―]/g, "-")
+    .replace(/[·•∙]/g, "-")
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/…/g, "...");
+}
+
 function parseLocal(iso) {
   if (!iso) return null;
   const d = new Date(iso);
@@ -212,7 +226,7 @@ function reviewBoxHtml(post, slot) {
     rev.decision === "approved"
       ? "Accepted"
       : rev.decision === "rejected"
-        ? "Rejected — change stored. Waiting for every other post."
+        ? "Rejected - change stored. Waiting for every other post."
         : "Accept or Reject this " + kind + ". If you reject, write the change in the box.";
   const slotId = esc(post.id) + "-" + esc(slot);
   return `<div class="review-box ${boxClass}" data-review-for="${esc(post.id)}">
@@ -240,7 +254,7 @@ function assetUrl(path) {
 }
 
 function captionFor(post, channel) {
-  return ((post.variants && post.variants[channel]) || post.body || "").trim();
+  return publicCopy(((post.variants && post.variants[channel]) || post.body || "").trim());
 }
 
 function handleFor(channel) {
@@ -256,7 +270,7 @@ function storyFrames(post, channel) {
     .filter((l) => /^Frame\s+\d/i.test(l));
   return assets.map((src, i) => ({
     src: assetUrl(src),
-    text: (lines[i] || "").replace(/^Frame\s+\d+\s*:\s*/i, "") || post.title,
+    text: publicCopy((lines[i] || "").replace(/^Frame\s+\d+\s*:\s*/i, "") || post.title),
   }));
 }
 
@@ -314,10 +328,10 @@ function fbPost(post) {
   const src = assetUrl((post.assets && post.assets[0]) || "");
   const handle = handleFor("facebook") || "southcoastrods";
   return `<div class="fb-card">
-    <div class="fb-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(post.scheduledFor))} · Facebook</div></div></div>
+    <div class="fb-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(post.scheduledFor))} - Facebook</div></div></div>
     <p class="fb-copy">${esc(cap)}</p>
     <div class="fb-media ${post.format === "story" || post.format === "reel" ? "tall" : ""}"><img src="${esc(src)}" alt="" /></div>
-    <div class="fb-actions">Like · Comment · Share</div>
+    <div class="fb-actions">Like - Comment - Share</div>
   </div>`;
 }
 
@@ -353,11 +367,11 @@ function renderPreview() {
   return `
     <div class="banner preview-banner">
       <div>
-        <h2>Week of ${esc(week.weekStart || "—")} — as it will look</h2>
+        <h2>Week of ${esc(week.weekStart || "-")} - as it will look</h2>
         <p>Accept or Reject each post or story. If you reject, write the change in the box. A follow-up text is sent only after every post has a decision, and only if something was rejected.</p>
-        <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " · " + remaining + " left" : " · all decided"}</p>
+        <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " - " + remaining + " left" : " - all decided"}</p>
         ${reviewFlash ? `<p class="tiny">${esc(reviewFlash)}</p>` : ""}
-        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " · texts already sent to Graham and Stuart" : ""} · test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
+        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " - texts already sent to Graham and Stuart" : ""} - test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
       </div>
     </div>
     ${
@@ -368,9 +382,9 @@ function renderPreview() {
               const shown = channels.length ? channels : ["instagram"];
               return `<section class="preview-slot">
                 <header>
-                  <h3 class="serif">${esc(p.title)}</h3>
-                  <p class="muted">${esc(fmtTime(p.scheduledFor))} · ${esc(p.format)} · ${esc(p.pillar)}</p>
-                  ${p.mediaNotes ? `<p class="tiny">${esc(p.mediaNotes)}</p>` : ""}
+                  <h3 class="serif">${esc(publicCopy(p.title))}</h3>
+                  <p class="muted">${esc(fmtTime(p.scheduledFor))} - ${esc(p.format)} - ${esc(p.pillar)}</p>
+                  ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
                 ${reviewBoxHtml(p, "top")}
