@@ -87,6 +87,7 @@ async function loadState() {
     const neu = $("new-post");
     if (neu) neu.hidden = true;
     mergeStoredReviews();
+    isolateReviews();
     return;
   }
   const res = await fetch("/api/state", { cache: "no-store" });
@@ -95,6 +96,7 @@ async function loadState() {
   dirty = false;
   $("save-state").textContent = "Saved";
   $("save-state").className = "save-state ok";
+  isolateReviews();
 }
 
 async function saveState() {
@@ -182,6 +184,19 @@ function mergeStoredReviews() {
   } catch (e) {}
 }
 
+function isolateReviews() {
+  (state.posts || []).forEach((p) => {
+    const src = p.review && typeof p.review === "object" ? p.review : {};
+    p.review = {
+      decision: src.decision || null,
+      changes: src.changes || "",
+      round: Number(src.round) || 1,
+      decidedAt: src.decidedAt || null,
+      appliedAt: src.appliedAt || null,
+    };
+  });
+}
+
 function persistStoredReviews() {
   if (!window.__DESK_STATIC__) return;
   const map = {};
@@ -216,7 +231,7 @@ function reviewKind(post) {
   return post.format === "story" ? "story" : "post";
 }
 
-function reviewBoxHtml(post, slot) {
+function reviewBoxHtml(post) {
   const rev = ensureReview(post);
   const kind = reviewKind(post);
   const decided = rev.decision === "approved" || rev.decision === "rejected";
@@ -224,16 +239,17 @@ function reviewBoxHtml(post, slot) {
   const boxClass = rev.decision === "approved" ? "accepted" : rev.decision === "rejected" ? "turned-down" : "";
   const status =
     rev.decision === "approved"
-      ? "Accepted"
+      ? "Accepted - this item only"
       : rev.decision === "rejected"
-        ? "Rejected - change stored. Waiting for every other post."
-        : "Accept or Reject this " + kind + ". If you reject, write the change in the box.";
-  const slotId = esc(post.id) + "-" + esc(slot);
+        ? "Rejected - this item only. Waiting for every other post."
+        : "This decision applies only to this " + kind + ", not the others.";
+  const slotId = "changes-" + esc(post.id);
   return `<div class="review-box ${boxClass}" data-review-for="${esc(post.id)}">
-    <p class="review-box-title">Your decision on this ${esc(kind)}</p>
+    <p class="review-box-title">Your decision on this ${esc(kind)} only</p>
+    <p class="tiny"><strong>${esc(publicCopy(post.title))}</strong></p>
     <p class="tiny">${esc(status)}</p>
-    <label for="changes-${slotId}">Suggested change</label>
-    <textarea id="changes-${slotId}" data-changes="${esc(post.id)}" ${locked ? "disabled" : ""} placeholder="Required if you reject. Paste the caption you want, or say what to change.">${esc(rev.changes || "")}</textarea>
+    <label for="${slotId}">Suggested change</label>
+    <textarea id="${slotId}" data-changes="${esc(post.id)}" ${locked ? "disabled" : ""} placeholder="Required if you reject. Paste the caption you want, or say what to change.">${esc(rev.changes || "")}</textarea>
     <div class="actions">
       <button type="button" class="primary" data-approve="${esc(post.id)}" ${locked || rev.decision === "approved" ? "disabled" : ""}>Accept this ${esc(kind)}</button>
       <button type="button" class="ghost" data-reject="${esc(post.id)}" ${locked || rev.decision === "rejected" ? "disabled" : ""}>Reject this ${esc(kind)}</button>
@@ -380,20 +396,19 @@ function renderPreview() {
             .map((p) => {
               const channels = (p.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
               const shown = channels.length ? channels : ["instagram"];
-              return `<section class="preview-slot">
+              return `<section class="preview-slot" data-post-id="${esc(p.id)}">
                 <header>
                   <h3 class="serif">${esc(publicCopy(p.title))}</h3>
                   <p class="muted">${esc(fmtTime(p.scheduledFor))} - ${esc(p.format)} - ${esc(p.pillar)}</p>
                   ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
-                ${reviewBoxHtml(p, "top")}
+                ${reviewBoxHtml(p)}
                 <div class="phones">${shown
                   .map(
                     (ch) => `<div class="phone-col">
                   <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
                   ${mockFor(p, ch)}
-                  ${reviewBoxHtml(p, ch)}
                 </div>`
                   )
                   .join("")}</div>
@@ -512,29 +527,24 @@ async function saveStateNow() {
 }
 
 async function decidePost(id, decision, sourceEl) {
-  const post = (state.posts || []).find((p) => p.id === id);
+  id = String(id || "").trim();
+  const post = weekPosts().find((p) => p.id === id);
   if (!post) return;
   let changes = "";
   if (sourceEl) {
     const root = sourceEl.closest(".review-box");
     const box = root && root.querySelector("[data-changes]");
-    if (box) changes = String(box.value || "").trim();
-  }
-  if (!changes) {
-    document.querySelectorAll(`[data-changes="${id}"]`).forEach((box) => {
-      const value = String(box.value || "").trim();
-      if (value) changes = value;
-    });
+    if (box && box.getAttribute("data-changes") === id) changes = String(box.value || "").trim();
   }
   if (!changes) changes = String(ensureReview(post).changes || "").trim();
   if (decision === "rejected" && !changes) {
     window.alert("Write a suggested change in the box before rejecting this post.");
     return;
   }
-  ensureReview(post);
-  post.review.decision = decision;
-  post.review.changes = changes;
-  post.review.decidedAt = new Date().toISOString();
+  const rev = ensureReview(post);
+  rev.decision = decision;
+  rev.changes = changes;
+  rev.decidedAt = new Date().toISOString();
   persistStoredReviews();
   if (!window.__DESK_STATIC__) queueSave();
   render();
@@ -685,36 +695,41 @@ function renderBrand() {
   `;
 }
 
+function handleReviewClick(e) {
+  const approve = e.target.closest("[data-approve]");
+  const reject = e.target.closest("[data-reject]");
+  const btn = approve || reject;
+  if (!btn || btn.hasAttribute("disabled")) return;
+  const box = btn.closest("[data-review-for]");
+  const id = (box && box.getAttribute("data-review-for")) || btn.getAttribute(approve ? "data-approve" : "data-reject");
+  if (!id) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+  decidePost(id, approve ? "approved" : "rejected", btn);
+}
+
+function handleReviewInput(e) {
+  const el = e.target.closest("[data-changes]");
+  if (!el) return;
+  const id = el.getAttribute("data-changes");
+  const post = weekPosts().find((p) => p.id === id);
+  if (!post) return;
+  ensureReview(post).changes = el.value;
+  persistStoredReviews();
+}
+
 function bindView() {
   const approve = $("approve-week");
   const reject = $("reject-week");
   if (approve) approve.addEventListener("click", approveWeek);
   if (reject) reject.addEventListener("click", rejectWeek);
-  document.querySelectorAll("[data-approve]").forEach((el) =>
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      decidePost(el.dataset.approve, "approved", el);
-    })
-  );
-  document.querySelectorAll("[data-reject]").forEach((el) =>
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      decidePost(el.dataset.reject, "rejected", el);
-    })
-  );
-  document.querySelectorAll("[data-changes]").forEach((el) =>
-    el.addEventListener("input", () => {
-      const post = (state.posts || []).find((p) => p.id === el.dataset.changes);
-      if (!post) return;
-      ensureReview(post).changes = el.value;
-      document.querySelectorAll(`[data-changes="${el.dataset.changes}"]`).forEach((other) => {
-        if (other !== el) other.value = el.value;
-      });
-      persistStoredReviews();
-    })
-  );
+  const root = $("view");
+  if (root && root.dataset.reviewClicks !== "1") {
+    root.dataset.reviewClicks = "1";
+    root.addEventListener("click", handleReviewClick);
+    root.addEventListener("input", handleReviewInput);
+  }
   document.querySelectorAll(".story-phone").forEach((phone) => {
     phone.addEventListener("click", () => advanceStory(phone));
   });
