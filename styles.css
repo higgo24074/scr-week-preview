@@ -105,6 +105,8 @@ body.static-preview .nav-new { display: none; }
 .pill.scheduled { border-color: var(--forest); color: var(--forest); }
 .pill.published { border-color: var(--gold); color: #7a6220; }
 .pill.draft, .pill.idea { color: var(--muted); }
+.pill.accepted { border-color: var(--forest); color: var(--forest); }
+.pill.turned-down { border-color: var(--danger); color: var(--danger); }
 
 .post-row {
   display: grid;
@@ -212,6 +214,21 @@ textarea { min-height: 120px; resize: vertical; }
 .preview-slot { margin: 36px 0 48px; }
 .preview-slot header { margin-bottom: 16px; }
 .preview-slot h3 { margin: 0 0 4px; font-size: 26px; }
+.review-box {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+}
+.review-box textarea {
+  min-height: 88px;
+  margin-bottom: 10px;
+}
+.review-box .actions { margin-top: 4px; }
+.review-box button[disabled] { opacity: 0.45; cursor: default; }
+.review-box.accepted { border-color: var(--forest); }
+.review-box.turned-down { border-color: var(--danger); }
+.review-progress { margin: 0 0 8px; font-weight: 600; }
 .phones { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
 .phone-label {
   margin: 0 0 8px;

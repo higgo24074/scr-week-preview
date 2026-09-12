@@ -17,6 +17,8 @@ let filter = "all";
 let editingId = null;
 let saveTimer = null;
 let dirty = false;
+let completingReview = false;
+let reviewFlash = "";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -64,11 +66,12 @@ async function loadState() {
     if (!res.ok) throw new Error("Could not load the hosted Preview");
     state = await res.json();
     dirty = false;
-    $("save-state").textContent = "Reply APPROVE by SMS";
+    $("save-state").textContent = "Accept or Reject each post";
     $("save-state").className = "save-state ok";
     document.body.classList.add("static-preview");
     const neu = $("new-post");
     if (neu) neu.hidden = true;
+    mergeStoredReviews();
     return;
   }
   const res = await fetch("/api/state", { cache: "no-store" });
@@ -81,7 +84,7 @@ async function loadState() {
 
 async function saveState() {
   if (window.__DESK_STATIC__) {
-    $("save-state").textContent = "Reply APPROVE or REJECT by SMS";
+    $("save-state").textContent = "Accept or Reject each post";
     $("save-state").className = "save-state ok";
     return;
   }
@@ -147,6 +150,51 @@ function weekPosts() {
   return (state.posts || [])
     .filter((p) => p.status === "draft" || p.status === "review")
     .sort((a, b) => String(a.scheduledFor).localeCompare(String(b.scheduledFor)));
+}
+
+function reviewStorageKey() {
+  return "scr-post-review-" + (state.approval?.week?.weekStart || "none");
+}
+
+function mergeStoredReviews() {
+  try {
+    const raw = localStorage.getItem(reviewStorageKey());
+    if (!raw) return;
+    const map = JSON.parse(raw);
+    weekPosts().forEach((p) => {
+      if (map[p.id]) p.review = { ...(p.review || {}), ...map[p.id] };
+    });
+  } catch (e) {}
+}
+
+function persistStoredReviews() {
+  if (!window.__DESK_STATIC__) return;
+  const map = {};
+  weekPosts().forEach((p) => {
+    if (p.review) map[p.id] = p.review;
+  });
+  localStorage.setItem(reviewStorageKey(), JSON.stringify(map));
+}
+
+function ensureReview(post) {
+  if (!post.review) post.review = { decision: null, changes: "", round: 1, decidedAt: null };
+  return post.review;
+}
+
+function reviewProgress() {
+  const posts = weekPosts();
+  const decided = posts.filter((p) => p.review && (p.review.decision === "approved" || p.review.decision === "rejected"));
+  return {
+    total: posts.length,
+    decided: decided.length,
+    approved: posts.filter((p) => p.review && p.review.decision === "approved").length,
+    rejected: posts.filter((p) => p.review && p.review.decision === "rejected").length,
+  };
+}
+
+function allPostsDecided() {
+  const p = reviewProgress();
+  return p.total > 0 && p.decided === p.total;
 }
 
 function assetUrl(path) {
@@ -265,20 +313,16 @@ function renderPreview() {
   const week = state.approval?.week || {};
   const posts = weekPosts();
   const status = week.status || "none";
+  const progress = reviewProgress();
+  const remaining = Math.max(0, progress.total - progress.decided);
   return `
     <div class="banner preview-banner">
       <div>
         <h2>Week of ${esc(week.weekStart || "—")} — as it will look</h2>
-        <p>These are the planned Instagram, Facebook and TikTok posts from the real OneDrive shots and captions. Look through them, then ${window.__DESK_STATIC__ ? "reply APPROVE or REJECT by SMS" : "approve or reject the week"}. Test mode is ${state.testMode ? "on (nothing uploads)" : "off"}.</p>
-        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " · texts already sent to Graham and Stuart" : ""}</p>
-      </div>
-      <div class="actions">
-        ${
-          window.__DESK_STATIC__
-            ? `<p class="tiny">This page stays up with the PC off. Reply <strong>APPROVE</strong> or <strong>REJECT</strong> by text.</p>`
-            : `<button class="primary" id="approve-week" ${status === "approved" ? "disabled" : ""}>Approve week</button>
-        <button class="ghost" id="reject-week">Reject week</button>`
-        }
+        <p>Accept or Reject each post or story. If you reject, write the change in the box. A follow-up text is sent only after every post has a decision, and only if something was rejected.</p>
+        <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " · " + remaining + " left" : " · all decided"}</p>
+        ${reviewFlash ? `<p class="tiny">${esc(reviewFlash)}</p>` : ""}
+        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " · texts already sent to Graham and Stuart" : ""} · test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
       </div>
     </div>
     ${
@@ -286,13 +330,38 @@ function renderPreview() {
         ? posts
             .map((p) => {
               const channels = (p.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
+              const rev = ensureReview(p);
+              const decided = rev.decision === "approved" || rev.decision === "rejected";
+              const locked = allPostsDecided();
+              const boxClass = rev.decision === "approved" ? "accepted" : rev.decision === "rejected" ? "turned-down" : "";
               return `<section class="preview-slot">
                 <header>
                   <h3 class="serif">${esc(p.title)}</h3>
                   <p class="muted">${esc(fmtTime(p.scheduledFor))} · ${esc(p.format)} · ${esc(p.pillar)}</p>
                   ${p.mediaNotes ? `<p class="tiny">${esc(p.mediaNotes)}</p>` : ""}
+                  ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
                 <div class="phones">${channels.map((ch) => `<div><p class="phone-label">${esc(channelName(ch))}</p>${mockFor(p, ch)}</div>`).join("")}</div>
+                <div class="review-box ${boxClass}">
+                  <p class="tiny">${
+                    rev.decision === "approved"
+                      ? "Accepted"
+                      : rev.decision === "rejected"
+                        ? "Rejected — change stored. Waiting for every other post."
+                        : "Accept this post, or reject it and suggest a change."
+                  }</p>
+                  <label for="changes-${esc(p.id)}">Suggested change</label>
+                  <textarea id="changes-${esc(p.id)}" data-changes="${esc(p.id)}" ${locked ? "disabled" : ""} placeholder="Required if you reject. Paste the caption you want, or say what to change.">${esc(rev.changes || "")}</textarea>
+                  <div class="actions">
+                    <button class="primary" data-approve="${esc(p.id)}" ${locked || rev.decision === "approved" ? "disabled" : ""}>Accept</button>
+                    <button class="ghost" data-reject="${esc(p.id)}" ${locked || rev.decision === "rejected" ? "disabled" : ""}>Reject</button>
+                    ${
+                      decided
+                        ? `<span class="pill ${rev.decision === "approved" ? "accepted" : "turned-down"}">${esc(rev.decision)}</span>`
+                        : ""
+                    }
+                  </div>
+                </div>
               </section>`;
             })
             .join("")
@@ -301,39 +370,137 @@ function renderPreview() {
   `;
 }
 
-function approveWeek() {
-  if (window.__DESK_STATIC__) {
-    window.alert("Reply APPROVE by SMS to Graham or Stuart's text.");
+function applyRejectedCopy(post) {
+  const notes = String(post.review?.changes || "").trim();
+  if (!notes) return;
+  post.requestedChanges = notes;
+  post.approvalNotes = "Rejected change: " + notes;
+  const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
+  if (looksCaption) {
+    post.body = notes;
+    if (!post.variants) post.variants = {};
+    (post.channels || []).forEach((ch) => {
+      post.variants[ch] = notes;
+    });
+  }
+  post.review.decision = null;
+  post.review.changes = "";
+  post.review.appliedAt = new Date().toISOString();
+  post.review.round = (Number(post.review.round) || 1) + 1;
+}
+
+function reviewSmsBody(rejected) {
+  const weekStart = state.approval?.week?.weekStart || "";
+  const lines = [`SCR REVIEW ${weekStart}`];
+  weekPosts().forEach((p) => {
+    const d = p.review?.decision === "rejected" ? "REJECT" : "APPROVE";
+    const extra = d === "REJECT" ? " " + String(p.review.changes || "").replace(/\s+/g, " ").trim() : "";
+    lines.push(`${p.id} ${d}${extra}`.trim());
+  });
+  return lines.join("\n").slice(0, 1400);
+}
+
+function openReviewSms(rejected) {
+  const phone = (state.approval && state.approval.smsReplyTo) || "";
+  const body = reviewSmsBody(rejected);
+  const ask = rejected.length
+    ? "All posts decided. Send one text so the desk can apply any rejects, then only then send you a new Preview?"
+    : "All posts accepted. Send one text so the desk can record it? You will not get another Preview text.";
+  if (!phone) {
+    window.alert(ask + "\n\n" + body);
     return;
   }
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const href = ios ? `sms:${phone}&body=${encodeURIComponent(body)}` : `sms:${phone}?body=${encodeURIComponent(body)}`;
+  if (window.confirm(ask)) window.location.href = href;
+}
+
+function approveWeekFromPosts() {
   if (!state.approval) state.approval = {};
   if (!state.approval.week) state.approval.week = {};
   state.approval.week.status = "approved";
-  state.approval.week.signOff = { who: "desk", when: new Date().toISOString(), decision: "approve" };
-  state.approval.week.notes = "Approved from Social Desk preview after seeing the posts as they will look on IG / Facebook / TikTok.";
+  state.approval.week.signOff = { who: "preview", when: new Date().toISOString(), decision: "approve" };
+  state.approval.week.notes = "Every post/story accepted in Preview.";
+  state.approval.week.sendSmsAfterRevision = false;
   if (!state.testMode) {
     weekPosts().forEach((p) => {
       p.status = "scheduled";
     });
   }
-  queueSave();
+}
+
+async function maybeCompleteReview() {
+  if (completingReview || !allPostsDecided()) return;
+  completingReview = true;
+  try {
+    const rejected = weekPosts().filter((p) => p.review && p.review.decision === "rejected");
+    if (!rejected.length) {
+      approveWeekFromPosts();
+      persistStoredReviews();
+      reviewFlash = "Every post accepted. No follow-up text.";
+      if (window.__DESK_STATIC__) openReviewSms([]);
+      else await saveStateNow();
+      render();
+      return;
+    }
+    if (window.__DESK_STATIC__) {
+      persistStoredReviews();
+      reviewFlash = "All posts decided. Send the one review text so changes can be applied, then a new Preview SMS goes out.";
+      openReviewSms(rejected);
+      render();
+      return;
+    }
+    rejected.forEach(applyRejectedCopy);
+    if (!state.approval) state.approval = {};
+    if (!state.approval.week) state.approval.week = {};
+    state.approval.week.status = "awaiting";
+    state.approval.week.sendSmsAfterRevision = true;
+    state.approval.week.signOff = { who: "preview", when: new Date().toISOString(), decision: "reject", notes: rejected.map((p) => p.id).join(", ") };
+    state.approval.week.notes = "Per-post review: " + rejected.length + " rejected and revised. Follow-up SMS after every post was decided.";
+    persistStoredReviews();
+    await saveStateNow();
+    try {
+      await fetch("/api/review/complete", { method: "POST" });
+      reviewFlash = "Changes applied. A follow-up Preview text is queued for Graham and Stuart.";
+    } catch (e) {
+      reviewFlash = "Changes applied. Start the Windows task SCR Preview SMS so the follow-up text goes out.";
+    }
+    render();
+  } finally {
+    completingReview = false;
+  }
+}
+
+async function saveStateNow() {
+  clearTimeout(saveTimer);
+  await saveState();
+}
+
+async function decidePost(id, decision) {
+  const post = (state.posts || []).find((p) => p.id === id);
+  if (!post) return;
+  const box = document.querySelector(`[data-changes="${id}"]`);
+  const changes = box ? String(box.value || "").trim() : String(ensureReview(post).changes || "").trim();
+  if (decision === "rejected" && !changes) {
+    window.alert("Write a suggested change in the box before rejecting this post.");
+    return;
+  }
+  ensureReview(post);
+  post.review.decision = decision;
+  post.review.changes = changes;
+  post.review.decidedAt = new Date().toISOString();
+  persistStoredReviews();
+  if (!window.__DESK_STATIC__) queueSave();
   render();
+  await maybeCompleteReview();
+}
+
+function approveWeek() {
+  window.alert("Use Accept or Reject on each post. A follow-up text is only sent after every post has a decision.");
 }
 
 function rejectWeek() {
-  if (window.__DESK_STATIC__) {
-    window.alert("Reply REJECT by SMS and say what to change.");
-    return;
-  }
-  const notes = window.prompt("REJECT — what should change?");
-  if (notes == null) return;
-  if (!state.approval) state.approval = {};
-  if (!state.approval.week) state.approval.week = {};
-  state.approval.week.status = "rejected";
-  state.approval.week.signOff = { who: "desk", when: new Date().toISOString(), decision: "reject", notes };
-  state.approval.week.notes = notes;
-  queueSave();
-  render();
+  window.alert("Use Reject on the post you want changed, and write the change in its box.");
 }
 
 function advanceStory(root) {
@@ -477,6 +644,28 @@ function bindView() {
   const reject = $("reject-week");
   if (approve) approve.addEventListener("click", approveWeek);
   if (reject) reject.addEventListener("click", rejectWeek);
+  document.querySelectorAll("[data-approve]").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      decidePost(el.dataset.approve, "approved");
+    })
+  );
+  document.querySelectorAll("[data-reject]").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      decidePost(el.dataset.reject, "rejected");
+    })
+  );
+  document.querySelectorAll("[data-changes]").forEach((el) =>
+    el.addEventListener("input", () => {
+      const post = (state.posts || []).find((p) => p.id === el.dataset.changes);
+      if (!post) return;
+      ensureReview(post).changes = el.value;
+      persistStoredReviews();
+    })
+  );
   document.querySelectorAll(".story-phone").forEach((phone) => {
     phone.addEventListener("click", () => advanceStory(phone));
   });

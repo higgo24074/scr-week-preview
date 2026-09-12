@@ -14,16 +14,17 @@
                      "onedriveTrawl":  "scripts/trawl-onedrive.ps1",
                      "onedriveTask":  "SCR Monday OneDrive trawl (Monday 08:50)",
                      "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
-                     "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1 â€” restart Windows sync in the background or use Graph; never prompt anyone to sign in. Pull new media@ catch reports only â€” never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS Graham and Stuart. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
+                     "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1. Trawl media@southcoastrods.com for new catch reports and product shots (scripts/trawl-media-inbox.ps1). media@ is Google Workspace â€” open it with Gmail IMAP from MX, not Office 365 Graph. Never a sign-in prompt. Never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures plus any new media@ product shots. Do not name Graham or Stuart in a post unless it is a catch report. Then SMS both. They Accept or Reject each post on Preview. A follow-up text is sent only after every post has a decision, and only if something was rejected.",
                      "hostedPreviewUrl":  "https://higgo24074.github.io/scr-week-preview/",
-                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview/",
-                     "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories planned: {titles}. Preview them as they will look: {previewUrl} then reply APPROVE for the whole week, or REJECT and what to change.",
+                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview",
+                     "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories. Preview: {previewUrl} Accept or Reject each post there. We only text again after every post is decided, and only if you asked for changes.",
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
-                                  "smsSentAt":  "2026-09-12T16:44:44.9695611Z",
+                                  "smsSentAt":  "2026-09-12T17:04:52.7827554Z",
+                                  "sendSmsAfterRevision":  false,
                                   "signOff":  null,
-                                  "notes":  "Live Monday demo 12 Sep 2026. OneDrive trawl copied 63 SCR/ST keepers. media@ IMAP rejected. No new catch reports. Product week. Craig Startin 36lb held. Grey studio shots dropped for bank/water keepers. Preview URL in the week SMS."
+                                  "notes":  "Format-check SMS requested 12 Sep evening. Per-post Accept/Reject on Preview. Follow-up text only after every post is decided, and only if something was rejected."
                               },
                      "approvers":  [
                                        {
@@ -39,7 +40,8 @@
                                    ],
                      "unassignedCompanyMobiles":  [
 
-                                                  ]
+                                                  ],
+                     "smsReplyTo":  "+447460091242"
                  },
     "brand":  {
                   "name":  "South Coast Rods",
@@ -300,11 +302,11 @@
                                        "tiktok",
                                        "facebook"
                                    ],
-                      "body":  "South Coast Rods are official sponsors of Carp Team England. Graham Mabey is Assistant Manager and a two-time World Champion. We are on the bank with the squad â€” not just on the kit list.",
+                      "body":  "South Coast Rods are official sponsors of Carp Team England. Same kit the squad take to the match. On the bank with the team - not just on the kit list.",
                       "variants":  {
-                                       "instagram":  "Official sponsors of Carp Team England.\n\nGraham is Assistant Manager. Two-time World Champion. Stu builds the rods.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
-                                       "tiktok":  "Carp Team England.\nOfficial kit: SCR.\n\nGraham\u0027s on the bank. Stu built the blanks.\n\n#southcoastrods #SCRrods",
-                                       "facebook":  "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step â€” Graham as Assistant Manager, Stu on the blanks, and the rest of us on the bank for the updates.\n\n#southcoastrods #SCRrods"
+                                       "instagram":  "Official sponsors of Carp Team England.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
+                                       "tiktok":  "Carp Team England.\nOfficial kit: SCR.\n\nOn the bank with the squad.\n\n#southcoastrods #SCRrods",
+                                       "facebook":  "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step - same blanks, same bank updates, same kit they take to the match.\n\n#southcoastrods #SCRrods"
                                    },
                       "hashtags":  [
                                        "#southcoastrods",
