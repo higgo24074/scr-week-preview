@@ -15,7 +15,8 @@
                      "onedriveTask":  "SCR Monday OneDrive trawl (Monday 08:50)",
                      "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
                      "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1 â€” restart Windows sync in the background or use Graph; never prompt anyone to sign in. Pull new media@ catch reports only â€” never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS Graham and Stuart. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
-                     "previewUrl":  "https://typically-iso-instrumental-belong.trycloudflare.com",
+                     "hostedPreviewUrl":  "https://higgo24074.github.io/scr-week-preview/",
+                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview/",
                      "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories planned: {titles}. Preview them as they will look: {previewUrl} then reply APPROVE for the whole week, or REJECT and what to change.",
                      "week":  {
                                   "weekStart":  "2026-09-14",
