@@ -1,0 +1,348 @@
+{
+    "testMode":  true,
+    "approval":  {
+                     "required":  true,
+                     "method":  "sms",
+                     "provider":  "twilio",
+                     "sameAs":  "new-order-agent",
+                     "when":  "monday-week",
+                     "need":  "one-of",
+                     "textBoth":  true,
+                     "schedule":  "Every Monday 09:00 Europe/London",
+                     "onedriveAccount":  "info@southcoastrods.onmicrosoft.com",
+                     "onedriveFolder":  "",
+                     "onedriveTrawl":  "scripts/trawl-onedrive.ps1",
+                     "onedriveTask":  "SCR Monday OneDrive trawl (Monday 08:50)",
+                     "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
+                     "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1 â€” restart Windows sync in the background or use Graph; never prompt anyone to sign in. Pull new media@ catch reports only â€” never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS Graham and Stuart. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
+                     "previewUrl":  "https://typically-iso-instrumental-belong.trycloudflare.com",
+                     "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories planned: {titles}. Preview them as they will look: {previewUrl} then reply APPROVE for the whole week, or REJECT and what to change.",
+                     "week":  {
+                                  "weekStart":  "2026-09-14",
+                                  "status":  "awaiting",
+                                  "smsSentAt":  "2026-09-12T16:44:44.9695611Z",
+                                  "signOff":  null,
+                                  "notes":  "Live Monday demo 12 Sep 2026. OneDrive trawl copied 63 SCR/ST keepers. media@ IMAP rejected. No new catch reports. Product week. Craig Startin 36lb held. Grey studio shots dropped for bank/water keepers. Preview URL in the week SMS."
+                              },
+                     "approvers":  [
+                                       {
+                                           "id":  "graham",
+                                           "name":  "Graham Mabey",
+                                           "phone":  ""
+                                       },
+                                       {
+                                           "id":  "stuart",
+                                           "name":  "Stuart Higgs",
+                                           "phone":  ""
+                                       }
+                                   ],
+                     "unassignedCompanyMobiles":  [
+
+                                                  ]
+                 },
+    "brand":  {
+                  "name":  "South Coast Rods",
+                  "tagline":  "Built Different â€” premium carp rods, sold direct.",
+                  "website":  "https://southcoastrods.com",
+                  "hashtags":  [
+                                   "#southcoastrods",
+                                   "#SCRrods",
+                                   "#bigcarp",
+                                   "#carpstory"
+                               ],
+                  "ctas":  [
+                               "Send your catch to media@southcoastrods.com",
+                               "ST10, ST12 or ST13 â€” which one are you on?",
+                               "Shop the ST range at southcoastrods.com"
+                           ]
+              },
+    "channels":  [
+                     {
+                         "id":  "instagram",
+                         "name":  "Instagram",
+                         "handle":  "@south_coast_rods",
+                         "status":  "active",
+                         "cadence":  "5 posts / week",
+                         "bestTimes":  [
+                                           "11:00",
+                                           "18:00"
+                                       ],
+                         "notes":  "Reels and stories first. Catch photo 4:5. Product stories 9:16 from media/products."
+                     },
+                     {
+                         "id":  "tiktok",
+                         "name":  "TikTok",
+                         "handle":  "@south_coast_rods",
+                         "status":  "active",
+                         "cadence":  "4 posts / week",
+                         "bestTimes":  [
+                                           "12:00",
+                                           "19:00"
+                                       ],
+                         "notes":  "Native recut of the IG reel. Fish or blank in the first second. Sparse hashtags."
+                     },
+                     {
+                         "id":  "facebook",
+                         "name":  "Facebook",
+                         "handle":  "southcoastrods",
+                         "status":  "active",
+                         "cadence":  "3 posts / week",
+                         "bestTimes":  [
+                                           "10:00",
+                                           "16:00"
+                                       ],
+                         "notes":  "5.9k followers. Community catch posts land well. Do not duplicate a catch already on this page."
+                     },
+                     {
+                         "id":  "linkedin",
+                         "name":  "LinkedIn",
+                         "handle":  "",
+                         "status":  "paused",
+                         "cadence":  "off",
+                         "bestTimes":  [
+
+                                       ],
+                         "notes":  "Not a priority channel."
+                     },
+                     {
+                         "id":  "x",
+                         "name":  "X",
+                         "handle":  "",
+                         "status":  "paused",
+                         "cadence":  "off",
+                         "bestTimes":  [
+
+                                       ],
+                         "notes":  "Not a priority channel."
+                     },
+                     {
+                         "id":  "threads",
+                         "name":  "Threads",
+                         "handle":  "",
+                         "status":  "paused",
+                         "cadence":  "off",
+                         "bestTimes":  [
+
+                                       ],
+                         "notes":  "Not a priority channel."
+                     },
+                     {
+                         "id":  "youtube",
+                         "name":  "YouTube",
+                         "handle":  "",
+                         "status":  "paused",
+                         "cadence":  "off",
+                         "bestTimes":  [
+
+                                       ],
+                         "notes":  "Use for long product films later. Not this week."
+                     }
+                 ],
+    "posts":  [
+                  {
+                      "id":  "p-catch-craig-36",
+                      "title":  "Catch: Craig Startin 36lb",
+                      "pillar":  "proof",
+                      "format":  "static",
+                      "status":  "idea",
+                      "scheduledFor":  "",
+                      "channels":  [
+                                       "instagram",
+                                       "tiktok"
+                                   ],
+                      "body":  "Turning up to his syndicate blind with no shows and only the wind to go on, Craig Startin managed to winkle out this stunning 36lb stunner!",
+                      "variants":  {
+                                       "instagram":  "No shows. Just the wind.\n\nCraig Startin turned up to his syndicate blind and still winkled out this 36lb stunner.\n\nGot a fish on an SCR rod? Send the photo and the details to media@southcoastrods.com\n\n#southcoastrods #SCRrods #bigcarp #carpstory",
+                                       "tiktok":  "36lb. Syndicate. Blind session.\n\nCraig Startin had no shows â€” only the wind â€” and still found this one.\n\nSend your catch to media@southcoastrods.com\n\n#southcoastrods #SCRrods #bigcarp"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrods",
+                                       "#SCRrods",
+                                       "#bigcarp",
+                                       "#carpstory"
+                                   ],
+                      "cta":  "Send your catch to media@southcoastrods.com",
+                      "mediaNotes":  "Use Craig\u0027s Facebook photo (already on facebook.com/southcoastrods, 11 Sep). IG: 4:5 crop, fish and face clear, on-screen 36LB. TikTok: 9:16, open on the fish for 1s, then Craig. Do not name a rod model. Do not name the venue.",
+                      "approvalNotes":  "HELD. Already live on Facebook 11 Sep 2026. Not in this week\u0027s Monday pack. Never reuse as a new catch report.",
+                      "assets":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "p-story-st13",
+                      "title":  "Stories: ST13 product - three frames",
+                      "pillar":  "craft",
+                      "format":  "story",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-14T11:00:00",
+                      "channels":  [
+                                       "instagram",
+                                       "facebook"
+                                   ],
+                      "body":  "ST13. 13ft 3.75lb. The casting tool in the range â€” carp rod first, distance when you need it. Cast over 200 metres on the field. Forgiveness in the tip so you are not bumping them under the rod.",
+                      "variants":  {
+                                       "instagram":  "Frame 1: ST13 Â· 13ft 3.75lb\nFrame 2: Japanese Toray carbon. 1k reel seat.\nFrame 3: Not a light-lead through-action rod. ST10, ST12 or ST13?\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+                                       "facebook":  "ST13 â€” 13ft 3.75lb, the casting tool in the SCR range.\n\nCarp rod first. Distance when you ask for it. The blank has been cast over 200 metres on the field, with a special taper that still forgives under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrodsST13",
+                                       "#SCRrods",
+                                       "#southcoastrods"
+                                   ],
+                      "cta":  "ST10, ST12 or ST13?",
+                      "mediaNotes":  "9:16 stories from synced OneDrive bank shots only â€” no grey studio. Frame 1: media/products/onedrive/ST13.jpg. Frame 2: media/products/onedrive/st13-trio.jpg. Frame 3: media/products/onedrive/ST12.jpg. On-screen: ST13 / 13FT 3.75LB then THREE ON THE BANK then WHICH LENGTH?. Hold each frame 4â€“5s.",
+                      "approvalNotes":  "Official ST product images from SCR Drive. Price Â£369.99 only if asked â€” this story does not need a price.",
+                      "assets":  [
+                                     "media/products/onedrive/ST13.jpg",
+                                     "media/products/onedrive/st13-trio.jpg",
+                                     "media/products/onedrive/ST12.jpg"
+                                 ]
+                  },
+                  {
+                      "id":  "p-reel-st13-cast",
+                      "title":  "Reel/TikTok: ST13 is the casting tool",
+                      "pillar":  "craft",
+                      "format":  "reel",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-15T18:00:00",
+                      "channels":  [
+                                       "instagram",
+                                       "tiktok"
+                                   ],
+                      "body":  "The ST13 is the casting tool in the range. Carp fishing rod first â€” with the backbone to hit range when you need it. Over 200 metres on the casting field. Semi-fast special taper, progressive curve, power in the butt, forgiveness in the tip.",
+                      "variants":  {
+                                       "instagram":  "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgives them under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+                                       "tiktok":  "ST13. 13ft 3.75lb.\n\nCasting tool. Carp rod first.\n200m+ on the field.\nForgiveness still in the tip.\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrodsST13",
+                                       "#SCRrods",
+                                       "#southcoastrods"
+                                   ],
+                      "cta":  "Shop ST13 at southcoastrods.com",
+                      "mediaNotes":  "9:16, 12â€“15s. Bank shots only â€” no grey studio. Shot 1 (0â€“1s): onedrive/ST13.jpg, on-screen ST13. Shot 2: onedrive/st13-trio.jpg. Do not use CASTING---ST12.jpg on this ST13 post. No trending audio over the blank.",
+                      "approvalNotes":  "200 metres is a casting-field figure from the ST13 product page â€” keep that wording. Do not claim a customer hit 200m unless they said so.",
+                      "assets":  [
+                                     "media/products/onedrive/ST13.jpg",
+                                     "media/products/onedrive/st13-trio.jpg"
+                                 ]
+                  },
+                  {
+                      "id":  "p-story-st-ci",
+                      "title":  "Stories: ST-Ci Titanium TZ guides",
+                      "pillar":  "craft",
+                      "format":  "story",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-16T11:00:00",
+                      "channels":  [
+                                       "instagram",
+                                       "facebook",
+                                       "tiktok"
+                                   ],
+                      "body":  "New for 2026: ST-Ci. Same Special Taper blank. Titanium TZ guides with a ceramic insert â€” snag-less, corrosion proof, built for heavy use on braid or low-diameter mono. ST if you want the lightest Air guides. ST-Ci if you want the most durable set we have tested.",
+                      "variants":  {
+                                       "instagram":  "Frame 1: ST-Ci Â· new for 2026\nFrame 2: Titanium TZ. Ceramic insert. Any mainline.\nFrame 3: Same ST blank. Tougher guides. ST or ST-Ci?\n\n#southcoastrods #SCRrods",
+                                       "facebook":  "ST-Ci is new for 2026.\n\nSame SCR Special Taper blank. The difference is the guide set â€” Titanium TZ with a traditional ceramic insert. In testing they added distance, smoothed the retrieve, and took heavy use on braid and low-diameter mono.\n\nWant the lightest Air guides? Stay on ST. Want the most durable set we have tested? That is ST-Ci.\n\n#southcoastrods #SCRrods",
+                                       "tiktok":  "Same ST blank.\nNew for 2026: Titanium TZ guides.\n\nST-Ci. Built for heavy use.\n\n#southcoastrods #SCRrods"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrods",
+                                       "#SCRrods"
+                                   ],
+                      "cta":  "ST or ST-Ci?",
+                      "mediaNotes":  "9:16. Bank/water only. Frame 1: onedrive/ST12-Ci-set-up-2-.jpg with ST-CI on screen. Frame 2: onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg (guides over water). Frame 3: onedrive/SCR-ST12-Ci-branding-.JPG + ST OR ST-CI.",
+                      "approvalNotes":  "ST13-Ci is Â£399.99 on the shop. Do not put price on the story unless they ask.",
+                      "assets":  [
+                                     "media/products/onedrive/ST12-Ci-set-up-2-.jpg",
+                                     "media/products/onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg",
+                                     "media/products/onedrive/SCR-ST12-Ci-branding-.jpg"
+                                 ]
+                  },
+                  {
+                      "id":  "p-st12-allrounder",
+                      "title":  "ST12 - the all-rounder",
+                      "pillar":  "point of view",
+                      "format":  "static",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-17T10:00:00",
+                      "channels":  [
+                                       "facebook",
+                                       "instagram"
+                                   ],
+                      "body":  "ST12. 12ft 3.5lb. All-round, multi-range, bag work. Same special taper as the rest of the range â€” power when you lean on it, forgiveness when they are under the tip.",
+                      "variants":  {
+                                       "facebook":  "If you only want one length in the van, a lot of anglers pick the ST12.\n\n12ft 3.5lb. All-round, multi-range, bag work. Same Special Taper as the ST13 â€” semi-fast, progressive, Japanese Toray carbon â€” without being the out-and-out casting tool.\n\nST10 for close work and boats. ST13 when you need to go long. ST12 for everything in between.\n\n#southcoastrodsST12 #SCRrods #southcoastrods",
+                                       "instagram":  "One length in the van.\n\nST12. 12ft 3.5lb. All-round, multi-range, bag work.\n\nSame special taper. Not the 200m tool â€” that is the ST13.\n\n#southcoastrodsST12 #SCRrods #southcoastrods"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrodsST12",
+                                       "#SCRrods",
+                                       "#southcoastrods"
+                                   ],
+                      "cta":  "Which length are you on?",
+                      "mediaNotes":  "4:5 crop of media/products/onedrive/SCR-ST12-set-up.jpg (bank, ST12 branding). Optional carousel: then onedrive/ST12-1-.jpg. On-screen: ST12 Â· 12FT 3.5LB. Do not use grey studio ST12 hero/reel-seat shots.",
+                      "approvalNotes":  "ST12 is Â£345.99. Caption does not need the price.",
+                      "assets":  [
+                                     "media/products/onedrive/SCR-ST12-set-up.jpg",
+                                     "media/products/onedrive/ST12-1-.jpg"
+                                 ]
+                  },
+                  {
+                      "id":  "p-cte-sponsors",
+                      "title":  "Official sponsors - Carp Team England",
+                      "pillar":  "people",
+                      "format":  "static",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-18T19:00:00",
+                      "channels":  [
+                                       "instagram",
+                                       "tiktok",
+                                       "facebook"
+                                   ],
+                      "body":  "South Coast Rods are official sponsors of Carp Team England. Graham Mabey is Assistant Manager and a two-time World Champion. We are on the bank with the squad â€” not just on the kit list.",
+                      "variants":  {
+                                       "instagram":  "Official sponsors of Carp Team England.\n\nGraham is Assistant Manager. Two-time World Champion. Stu builds the rods.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
+                                       "tiktok":  "Carp Team England.\nOfficial kit: SCR.\n\nGraham\u0027s on the bank. Stu built the blanks.\n\n#southcoastrods #SCRrods",
+                                       "facebook":  "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step â€” Graham as Assistant Manager, Stu on the blanks, and the rest of us on the bank for the updates.\n\n#southcoastrods #SCRrods"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrods",
+                                       "#SCRrods"
+                                   ],
+                      "cta":  "Follow the squad updates on our page",
+                      "mediaNotes":  "Use media/products/onedrive/st13-trio.jpg (three rods in the bivvy, bank light). Do not generate fake team photos. Do not invent match results.",
+                      "approvalNotes":  "Sponsorship is public (Angling Trust, Feb 2025, through 2027). Do not claim a 2026 gold unless they confirm it.",
+                      "assets":  [
+                                     "media/products/onedrive/st13-trio.jpg"
+                                 ]
+                  },
+                  {
+                      "id":  "p-invite-media-inbox",
+                      "title":  "Invite: send catches to media@",
+                      "pillar":  "invite",
+                      "format":  "story",
+                      "status":  "draft",
+                      "scheduledFor":  "2026-09-19T11:00:00",
+                      "channels":  [
+                                       "instagram",
+                                       "facebook"
+                                   ],
+                      "body":  "If you have had a fish on an SCR rod, we want the catch report. Photo, weight, what happened. Send it to media@southcoastrods.com and we will put it on the desk.",
+                      "variants":  {
+                                       "instagram":  "Frame 1: GOT A FISH ON SCR?\nFrame 2: Photo + weight + the story\nFrame 3: media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
+                                       "facebook":  "Catch reports keep this page alive.\n\nIf you have had one on an SCR rod, send the photo, the weight, and what happened to media@southcoastrods.com â€” we will get it on Instagram, Facebook and TikTok.\n\n#southcoastrods #SCRrods #carpstory"
+                                   },
+                      "hashtags":  [
+                                       "#southcoastrods",
+                                       "#SCRrods",
+                                       "#carpstory"
+                                   ],
+                      "cta":  "Email media@southcoastrods.com",
+                      "mediaNotes":  "9:16 type-led stories on a crop of media/products/onedrive/ST12-Ci-set-up-2-.jpg (jetty, water), dark overlay, large type. Facebook can be the same graphic as a 4:5 still.",
+                      "approvalNotes":  "This is the standing invite so the inbox actually fills.",
+                      "assets":  [
+                                     "media/products/onedrive/ST12-Ci-set-up-2-.jpg"
+                                 ]
+                  }
+              ]
+}
