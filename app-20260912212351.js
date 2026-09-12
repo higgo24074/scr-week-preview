@@ -19,7 +19,6 @@ let saveTimer = null;
 let dirty = false;
 let completingReview = false;
 let reviewFlash = "";
-let dockPostId = null;
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -404,15 +403,26 @@ function renderPreview() {
                   ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
-                <div class="phones">${shown
-                  .map(
-                    (ch, i) => `<div class="phone-col">
-                  <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
-                  ${mockFor(p, ch)}
-                  ${i === 0 ? reviewBoxHtml(p, "slot") : ""}
-                </div>`
-                  )
-                  .join("")}</div>
+                <div class="phones">
+                  <div class="phone-col">
+                    <p class="phone-label">${esc(channelName(shown[0]))} ${p.format === "story" ? "story" : "post"}</p>
+                    ${mockFor(p, shown[0])}
+                  </div>
+                </div>
+                ${reviewBoxHtml(p, "slot")}
+                ${
+                  shown.length > 1
+                    ? `<div class="phones extra-phones">${shown
+                        .slice(1)
+                        .map(
+                          (ch) => `<div class="phone-col">
+                    <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
+                    ${mockFor(p, ch)}
+                  </div>`
+                        )
+                        .join("")}</div>`
+                    : ""
+                }
               </section>`;
             })
             .join("")
@@ -720,54 +730,17 @@ function handleReviewInput(e) {
   persistStoredReviews();
 }
 
-function bindReviewDock() {
-  const dock = $("review-dock");
-  if (!dock) return;
-  if (view !== "preview") {
-    dock.hidden = true;
-    return;
-  }
-  const slots = [...document.querySelectorAll(".preview-slot[data-post-id]")];
-  if (!slots.length) {
-    dock.hidden = true;
-    return;
-  }
-  if (!dockPostId) dockPostId = slots[0].getAttribute("data-post-id");
-  const post = weekPosts().find((p) => p.id === dockPostId) || weekPosts()[0];
-  if (!post) {
-    dock.hidden = true;
-    return;
-  }
-  dock.hidden = false;
-  dock.innerHTML = reviewBoxHtml(post, "dock");
-  if (window.__reviewObserver) window.__reviewObserver.disconnect();
-  if (!("IntersectionObserver" in window)) return;
-  window.__reviewObserver = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible) return;
-      const id = visible.target.getAttribute("data-post-id");
-      if (!id || id === dockPostId) return;
-      dockPostId = id;
-      const next = weekPosts().find((p) => p.id === id);
-      if (next) dock.innerHTML = reviewBoxHtml(next, "dock");
-    },
-    { threshold: [0.2, 0.4, 0.7] }
-  );
-  slots.forEach((slot) => window.__reviewObserver.observe(slot));
-}
-
 function bindView() {
   const approve = $("approve-week");
   const reject = $("reject-week");
   if (approve) approve.addEventListener("click", approveWeek);
   if (reject) reject.addEventListener("click", rejectWeek);
-  if (document.body.dataset.reviewClicks !== "1") {
-    document.body.dataset.reviewClicks = "1";
-    document.body.addEventListener("click", handleReviewClick);
-    document.body.addEventListener("input", handleReviewInput);
+  const root = $("view");
+  if (root && root.dataset.reviewClicks !== "1") {
+    root.dataset.reviewClicks = "1";
+    root.addEventListener("click", handleReviewClick);
+    root.addEventListener("input", handleReviewInput);
   }
-  bindReviewDock();
   document.querySelectorAll(".story-phone").forEach((phone) => {
     phone.addEventListener("click", () => advanceStory(phone));
   });
