@@ -197,6 +197,7 @@ function storedReviewIsStale(post, stored) {
 
 function dropStaleReviewCache() {
   if (!window.__DESK_STATIC__) return;
+  forgetPreviewReviewsOnNewBuild();
   const keep = reviewStorageKey();
   const week = state.approval?.week?.weekStart || "";
   if (!week) return;
@@ -206,6 +207,22 @@ function dropStaleReviewCache() {
     });
   } catch (e) {}
 }
+
+function forgetPreviewReviewsOnNewBuild() {
+  const build = window.__DESK_BUILD__ || "";
+  if (!build) return;
+  try {
+    const last = localStorage.getItem("scr-preview-build");
+    if (last && last !== build) {
+      Object.keys(localStorage).forEach((k) => {
+        if (k.indexOf("scr-post-review-") === 0) localStorage.removeItem(k);
+      });
+    }
+    localStorage.setItem("scr-preview-build", build);
+  } catch (e) {}
+}
+
+function mergeStoredReviews() {
   try {
     const raw = localStorage.getItem(reviewStorageKey());
     if (!raw) return;
