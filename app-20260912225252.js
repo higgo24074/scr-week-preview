@@ -86,6 +86,7 @@ async function loadState() {
     view = "preview";
     const neu = $("new-post");
     if (neu) neu.hidden = true;
+    dropStaleReviewCache();
     mergeStoredReviews();
     isolateReviews();
     return;
@@ -169,11 +170,42 @@ function weekPosts() {
     .sort((a, b) => String(a.scheduledFor).localeCompare(String(b.scheduledFor)));
 }
 
-function reviewStorageKey() {
-  return "scr-post-review-" + (state.approval?.week?.weekStart || "none");
+function reviewRound() {
+  const fromWeek = Number(state.approval?.week?.reviewRound);
+  if (fromWeek) return fromWeek;
+  return (state.posts || []).reduce((max, p) => Math.max(max, Number(p.review?.round) || 1), 1);
 }
 
-function mergeStoredReviews() {
+function reviewStorageKey() {
+  return "scr-post-review-" + (state.approval?.week?.weekStart || "none") + "-r" + reviewRound();
+}
+
+function storedReviewIsStale(post, stored) {
+  const round = Number(post.review?.round) || 1;
+  const storedRound = Number(stored.round) || 1;
+  if (storedRound < round) return true;
+  if (!post.review?.appliedAt) return false;
+  const applied = Date.parse(post.review.appliedAt);
+  if (!applied) return false;
+  const times = [stored.decidedAt];
+  if (stored.channels && typeof stored.channels === "object") {
+    Object.keys(stored.channels).forEach((k) => times.push(stored.channels[k] && stored.channels[k].decidedAt));
+  }
+  const latestStored = times.map((t) => Date.parse(t)).filter((n) => n).sort((a, b) => b - a)[0];
+  return !latestStored || applied >= latestStored;
+}
+
+function dropStaleReviewCache() {
+  if (!window.__DESK_STATIC__) return;
+  const keep = reviewStorageKey();
+  const week = state.approval?.week?.weekStart || "";
+  if (!week) return;
+  try {
+    Object.keys(localStorage).forEach((k) => {
+      if (k.indexOf("scr-post-review-" + week) === 0 && k !== keep) localStorage.removeItem(k);
+    });
+  } catch (e) {}
+}
   try {
     const raw = localStorage.getItem(reviewStorageKey());
     if (!raw) return;
@@ -181,6 +213,7 @@ function mergeStoredReviews() {
     weekPosts().forEach((p) => {
       if (!map[p.id]) return;
       const stored = map[p.id];
+      if (storedReviewIsStale(p, stored)) return;
       p.review = { ...(p.review || {}), ...stored };
       if (stored.channels && typeof stored.channels === "object") {
         p.review.channels = JSON.parse(JSON.stringify(stored.channels));
@@ -486,6 +519,66 @@ function renderPreview() {
   `;
 }
 
+function applyReviewInstruction(text, notes) {
+  let out = String(text || "");
+  const parts = String(notes || "")
+    .trim()
+    .split(/(?<=\.)\s+(?=(Add|Change|Remove|On #|Swap|Use |Take |Put |Cut |Delete))/i)
+    .map((p) => p.trim().replace(/\.$/, ""))
+    .filter(Boolean);
+  parts.forEach((part) => {
+    let m = part.match(/^change\s+(.+?)\s+to\s+(.+)$/i);
+    if (m) {
+      const to = m[2].trim();
+      if (/^something more/i.test(to)) return;
+      const from = m[1].trim();
+      out = out.replace(new RegExp(from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), to);
+      return;
+    }
+    m = part.match(/^add\s+(#[A-Za-z0-9_]+)$/i);
+    if (m) {
+      if (!out.includes(m[1])) out = /#/.test(out) ? out.trimEnd() + " " + m[1] : out.trimEnd() + "\n\n" + m[1];
+      return;
+    }
+    m = part.match(/^add\s+(.+?)\s+to the front of\s+(.+)$/i);
+    if (m) {
+      let prefix = m[1].trim();
+      const t = prefix.match(/^(\d+)\s*T$/i);
+      if (t) prefix = t[1] + "T";
+      out = out.replace(new RegExp(m[2].trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), prefix + " " + m[2].trim());
+      return;
+    }
+    m = part.match(/^add\s+(.+?)\s+to\s+(.+)$/i);
+    if (m) {
+      const insert = m[1].trim();
+      const anchor = m[2].trim();
+      const bits = anchor.match(/^(\S+)\s+(.+)$/);
+      if (bits) out = out.replace(new RegExp(anchor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), bits[1] + " " + insert + " " + bits[2]);
+      return;
+    }
+    m = part.match(/^remove\s+(.+)$/i);
+    if (m) {
+      out = out.replace(new RegExp(m[1].trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), "");
+      out = out.replace(/,\s*,/g, ",").replace(/[ \t]{2,}/g, " ");
+      return;
+    }
+    m = part.match(/^on\s+(#[A-Za-z0-9_]+)/i);
+    if (m) {
+      const tag = m[1];
+      const model = tag.match(/^#southcoastrods(.+)$/i);
+      if (model) out = out.split(tag).join("#southcoastrods #" + model[1]);
+    }
+  });
+  return out.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").replace(/\b(\w+)\s+\1\b/gi, "$1").trimEnd();
+}
+
+function looksLikeFullCaption(notes) {
+  const s = String(notes || "").trim();
+  if (!s) return false;
+  if (/^(add|change|remove|on #|swap|use |take |put |cut |delete)/i.test(s)) return false;
+  return /^Frame\s+\d/i.test(s) || (s.length >= 80 && /#/.test(s));
+}
+
 function applyRejectedCopy(post) {
   ensureReview(post);
   const rejectedNotes = [];
@@ -495,10 +588,12 @@ function applyRejectedCopy(post) {
     const notes = String(rev.changes || "").trim();
     if (!notes) return;
     rejectedNotes.push(channelName(ch) + ": " + notes);
-    const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
-    if (looksCaption) {
-      if (!post.variants) post.variants = {};
-      post.variants[ch] = notes;
+    const current = captionFor(post, ch);
+    if (!post.variants) post.variants = {};
+    if (looksLikeFullCaption(notes)) post.variants[ch] = notes;
+    else {
+      const updated = applyReviewInstruction(current, notes);
+      if (updated && updated !== current) post.variants[ch] = updated;
     }
     rev.decision = null;
     rev.changes = "";
@@ -508,16 +603,6 @@ function applyRejectedCopy(post) {
   if (notes) {
     post.requestedChanges = notes;
     post.approvalNotes = "Rejected change: " + notes;
-    if (!rejectedNotes.length) {
-      const looksCaption = notes.length >= 40 || /#southcoastrods|#SCRrods|Frame\s+\d/i.test(notes);
-      if (looksCaption) {
-        post.body = notes;
-        if (!post.variants) post.variants = {};
-        (post.channels || []).forEach((ch) => {
-          post.variants[ch] = notes;
-        });
-      }
-    }
   }
   post.review.decision = null;
   post.review.changes = "";
