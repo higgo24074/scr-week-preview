@@ -21,8 +21,8 @@
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
-                                  "smsSentAt":  "2026-09-12T22:00:43.6592733Z",
-                                  "sendSmsAfterRevision":  true,
+                                  "smsSentAt":  "2026-09-12T22:15:44.4164298Z",
+                                  "sendSmsAfterRevision":  false,
                                   "reviewRound":  3,
                                   "signOff":  {
                                                   "who":  "preview",
@@ -76,7 +76,7 @@
                                            "11:00",
                                            "18:00"
                                        ],
-                         "notes":  "Reels and stories first. Catch photo 4:5. Product stories 9:16 from media/products."
+                         "notes":  "UK carp audience. Reels 18:00 weeknights. Stories 11:00 lunch or 18:00 evening. Catch photo 4:5. Product stories 9:16 from media/products."
                      },
                      {
                          "id":  "tiktok",
@@ -88,7 +88,7 @@
                                            "12:00",
                                            "19:00"
                                        ],
-                         "notes":  "Native recut of the IG reel. Fish or blank in the first second. Sparse hashtags."
+                         "notes":  "UK carp audience. 19:00 weeknights for reels. 12:00 lunch for a second slot. Fish or blank in the first second. Sparse hashtags."
                      },
                      {
                          "id":  "facebook",
@@ -100,7 +100,7 @@
                                            "10:00",
                                            "16:00"
                                        ],
-                         "notes":  "5.9k followers. Community catch posts land well. Do not duplicate a catch already on this page."
+                         "notes":  "UK carp community, slightly older than IG/TikTok. 10:00 morning and 16:00 before the evening session. Weekend 10:00. Do not duplicate a catch already on this page."
                      },
                      {
                          "id":  "linkedin",
@@ -183,7 +183,11 @@
                       "pillar":  "craft",
                       "format":  "story",
                       "status":  "draft",
-                      "scheduledFor":  "2026-09-14T11:00:00",
+                      "scheduledFor":  "2026-09-14T10:00:00",
+                      "scheduledForByChannel":  {
+                                                    "facebook":  "2026-09-14T10:00:00",
+                                                    "instagram":  "2026-09-14T11:00:00"
+                                                },
                       "channels":  [
                                        "instagram",
                                        "facebook"
@@ -234,6 +238,10 @@
                       "format":  "reel",
                       "status":  "draft",
                       "scheduledFor":  "2026-09-15T18:00:00",
+                      "scheduledForByChannel":  {
+                                                    "instagram":  "2026-09-15T18:00:00",
+                                                    "tiktok":  "2026-09-15T19:00:00"
+                                                },
                       "channels":  [
                                        "instagram",
                                        "tiktok"
@@ -282,7 +290,12 @@
                       "pillar":  "craft",
                       "format":  "story",
                       "status":  "draft",
-                      "scheduledFor":  "2026-09-16T11:00:00",
+                      "scheduledFor":  "2026-09-16T16:00:00",
+                      "scheduledForByChannel":  {
+                                                    "facebook":  "2026-09-16T16:00:00",
+                                                    "instagram":  "2026-09-16T18:00:00",
+                                                    "tiktok":  "2026-09-16T19:00:00"
+                                                },
                       "channels":  [
                                        "instagram",
                                        "facebook",
@@ -338,6 +351,10 @@
                       "format":  "static",
                       "status":  "draft",
                       "scheduledFor":  "2026-09-17T10:00:00",
+                      "scheduledForByChannel":  {
+                                                    "facebook":  "2026-09-17T10:00:00",
+                                                    "instagram":  "2026-09-17T18:00:00"
+                                                },
                       "channels":  [
                                        "facebook",
                                        "instagram"
@@ -385,7 +402,12 @@
                       "pillar":  "people",
                       "format":  "static",
                       "status":  "draft",
-                      "scheduledFor":  "2026-09-18T19:00:00",
+                      "scheduledFor":  "2026-09-18T16:00:00",
+                      "scheduledForByChannel":  {
+                                                    "facebook":  "2026-09-18T16:00:00",
+                                                    "instagram":  "2026-09-18T18:00:00",
+                                                    "tiktok":  "2026-09-18T19:00:00"
+                                                },
                       "channels":  [
                                        "instagram",
                                        "tiktok",
@@ -439,7 +461,11 @@
                       "pillar":  "invite",
                       "format":  "story",
                       "status":  "draft",
-                      "scheduledFor":  "2026-09-19T11:00:00",
+                      "scheduledFor":  "2026-09-19T10:00:00",
+                      "scheduledForByChannel":  {
+                                                    "facebook":  "2026-09-19T10:00:00",
+                                                    "instagram":  "2026-09-19T11:00:00"
+                                                },
                       "channels":  [
                                        "instagram",
                                        "facebook"

@@ -58,10 +58,16 @@ function fmtDay(d) {
   return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
 }
 
-function fmtTime(iso) {
-  const d = parseLocal(iso);
-  if (!d) return "Unscheduled";
-  return d.toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+function scheduleFor(post, channel) {
+  const map = post.scheduledForByChannel;
+  if (channel && map && map[channel]) return map[channel];
+  return post.scheduledFor;
+}
+
+function scheduleSummary(post) {
+  const chans = (post.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
+  const list = (chans.length ? chans : ["instagram"]).map((ch) => channelName(ch) + " " + fmtTime(scheduleFor(post, ch)));
+  return list.join(" - ");
 }
 
 function isOverdue(post) {
@@ -414,7 +420,7 @@ function igFeed(post) {
   return `<div class="device ig">
     <div class="device-bar">Instagram</div>
     <div class="ig-screen">
-      <div class="ig-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(post.scheduledFor))}</div></div></div>
+      <div class="ig-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(scheduleFor(post, "instagram")))}</div></div></div>
       <div class="ig-media feed"><img src="${esc(src)}" alt="" />${post.format === "reel" ? `<span class="play">▶</span>` : ""}</div>
       <div class="ig-icons">♡ 💬 ➤ <span class="ig-bookmark">Bookmark</span></div>
       <div class="ig-caption"><strong>${esc(handle)}</strong> ${esc(cap)}</div>
@@ -461,7 +467,7 @@ function fbPost(post) {
   const src = assetUrl((post.assets && post.assets[0]) || "");
   const handle = handleFor("facebook") || "southcoastrods";
   return `<div class="fb-card">
-    <div class="fb-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(post.scheduledFor))} - Facebook</div></div></div>
+    <div class="fb-head"><span class="ig-avatar"></span><div><strong>${esc(handle)}</strong><div class="tiny">${esc(fmtTime(scheduleFor(post, "facebook")))} - Facebook</div></div></div>
     <p class="fb-copy">${esc(cap)}</p>
     <div class="fb-media ${post.format === "story" || post.format === "reel" ? "tall" : ""}"><img src="${esc(src)}" alt="" /></div>
     <div class="fb-actions">Like - Comment - Share</div>
@@ -515,14 +521,15 @@ function renderPreview() {
               return `<section class="preview-slot" data-post-id="${esc(p.id)}">
                 <header>
                   <h3 class="serif">${esc(publicCopy(p.title))}</h3>
-                  <p class="muted">${esc(fmtTime(p.scheduledFor))} - ${esc(p.format)} - ${esc(p.pillar)}</p>
+                  <p class="muted">${esc(p.format)} - ${esc(p.pillar)}</p>
+                  <p class="tiny">${esc(scheduleSummary(p))}</p>
                   ${p.mediaNotes ? `<p class="tiny">${esc(publicCopy(p.mediaNotes))}</p>` : ""}
                   ${p.requestedChanges ? `<p class="tiny">Last requested change: ${esc(p.requestedChanges)}</p>` : ""}
                 </header>
                 ${shown
                   .map(
                     (ch) => `<div class="preview-item" data-review-item="${esc(reviewKey(p.id, ch))}">
-                  <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"}</p>
+                  <p class="phone-label">${esc(channelName(ch))} ${p.format === "story" ? "story" : "post"} - ${esc(fmtTime(scheduleFor(p, ch)))}</p>
                   ${mockFor(p, ch)}
                   ${reviewBoxHtml(p, ch)}
                 </div>`
@@ -828,7 +835,7 @@ function postRow(p) {
     <div>
       <span class="pill ${esc(p.status)}">${esc(p.status)}</span>
       ${overdue ? `<span class="pill overdue">overdue</span>` : ""}
-      <div class="tiny">${esc(fmtTime(p.scheduledFor))}</div>
+      <div class="tiny">${esc(scheduleSummary(p))}</div>
     </div>
     <div>
       <h3>${esc(p.title)}</h3>
