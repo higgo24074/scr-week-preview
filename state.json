@@ -16,21 +16,21 @@
                      "mondayTask":  "SCR Monday desk (Monday 09:00, trawl + SMS, no confirm)",
                      "rule":  "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com via scripts/trawl-onedrive.ps1. Trawl media@southcoastrods.com for new catch reports and product shots (scripts/trawl-media-inbox.ps1). media@ is Google Workspace - open it with Gmail IMAP from MX, not Office 365 Graph. Never a sign-in prompt. Never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures plus any new media@ product shots. Do not name Graham or Stuart in a post unless it is a catch report. Then SMS both. They Accept or Reject each post on Preview. A follow-up text is sent only after every post has a decision, and only if something was rejected.",
                      "hostedPreviewUrl":  "https://higgo24074.github.io/scr-week-preview/",
-                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview/",
+                     "previewUrl":  "https://higgo24074.github.io/scr-week-preview",
                      "smsTemplate":  "SCR desk - week of {weekStart}. {count} posts/stories. Preview: {previewUrl} Accept or Reject each post there. We only text again after every post is decided, and only if you asked for changes.",
                      "week":  {
                                   "weekStart":  "2026-09-14",
                                   "status":  "awaiting",
-                                  "smsSentAt":  "2026-09-12T21:29:08.6285438Z",
+                                  "smsSentAt":  "2026-09-12T22:00:43.6592733Z",
                                   "sendSmsAfterRevision":  true,
-                                  "reviewRound":  2,
+                                  "reviewRound":  3,
                                   "signOff":  {
                                                   "who":  "preview",
-                                                  "when":  "2026-09-12T21:28:04.1665173Z",
+                                                  "when":  "2026-09-12T22:15:11.2062418Z",
                                                   "decision":  "reject",
-                                                  "notes":  "p-story-st13, p-reel-st13-cast, p-cte-sponsors, p-invite-media-inbox"
+                                                  "notes":  "p-reel-st13-cast"
                                               },
-                                  "notes":  "Per-post review: 4 rejected and revised. Follow-up SMS after every post was decided."
+                                  "notes":  "Per-post review: 1 rejected and revised. Follow-up SMS after every post was decided."
                               },
                      "approvers":  [
                                        {
@@ -209,17 +209,17 @@
                       "review":  {
                                      "channels":  {
                                                       "instagram":  {
-                                                                        "decision":  null,
+                                                                        "decision":  "approved",
                                                                         "changes":  "",
-                                                                        "decidedAt":  null
+                                                                        "decidedAt":  "2026-09-12T22:15:09.5467769Z"
                                                                     },
                                                       "facebook":  {
-                                                                       "decision":  null,
+                                                                       "decision":  "approved",
                                                                        "changes":  "",
-                                                                       "decidedAt":  null
+                                                                       "decidedAt":  "2026-09-12T22:15:09.5766787Z"
                                                                    }
                                                   },
-                                     "decision":  null,
+                                     "decision":  "approved",
                                      "changes":  "",
                                      "round":  2,
                                      "appliedAt":  "2026-09-12T21:28:03.9445877Z",
@@ -240,7 +240,7 @@
                                    ],
                       "body":  "The ST13 is the casting tool in the range. Carp fishing rod first - with the backbone to hit range when you need it. Over 200 metres on the casting field. Semi-fast special taper, progressive curve, power in the butt, forgiveness in the tip.",
                       "variants":  {
-                                       "instagram":  "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgiving under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+                                       "instagram":  "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgiving under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\n#southcoastrods #ST13 #SCRrods #southcoastrods",
                                        "tiktok":  "ST13. 13ft 3.75lb.\n\nCasting tool. Carp rod first.\n200m+ on the field.\nForgiving in the tip.\n\n#southcoastrods #ST13 #SCRrods"
                                    },
                       "hashtags":  [
@@ -250,7 +250,7 @@
                                    ],
                       "cta":  "Shop ST13 at southcoastrods.com",
                       "mediaNotes":  "9:16, 12-15s. Bank shots only - no grey studio. Shot 1 (0-1s): onedrive/ST13.jpg, on-screen ST13. Shot 2: onedrive/st13-trio.jpg. Do not use CASTING---ST12.jpg on this ST13 post. No trending audio over the blank.",
-                      "approvalNotes":  "Rejected change: instagram: Change forgives them to forgiving | tiktok: On #southcoastrodsST13 separate the ST13 to its own #. Change forgiveness still to forgiving in",
+                      "approvalNotes":  "Rejected change: instagram: Change #southcoastrodsST13 to #southcoastrods #ST13",
                       "assets":  [
                                      "media/products/onedrive/ST13.jpg",
                                      "media/products/onedrive/st13-trio.jpg"
@@ -263,18 +263,18 @@
                                                                         "decidedAt":  null
                                                                     },
                                                       "tiktok":  {
-                                                                     "decision":  null,
+                                                                     "decision":  "approved",
                                                                      "changes":  "",
-                                                                     "decidedAt":  null
+                                                                     "decidedAt":  "2026-09-12T22:15:09.5861202Z"
                                                                  }
                                                   },
                                      "decision":  null,
                                      "changes":  "",
-                                     "round":  2,
-                                     "appliedAt":  "2026-09-12T21:28:04.0002653Z",
+                                     "round":  3,
+                                     "appliedAt":  "2026-09-12T22:15:11.1873181Z",
                                      "decidedAt":  null
                                  },
-                      "requestedChanges":  "instagram: Change forgives them to forgiving | tiktok: On #southcoastrodsST13 separate the ST13 to its own #. Change forgiveness still to forgiving in"
+                      "requestedChanges":  "instagram: Change #southcoastrodsST13 to #southcoastrods #ST13"
                   },
                   {
                       "id":  "p-story-st-ci",
@@ -300,7 +300,7 @@
                                    ],
                       "cta":  "ST or ST-Ci?",
                       "mediaNotes":  "9:16. Bank/water only. Frame 1: onedrive/ST12-Ci-set-up-2-.jpg with ST-CI on screen. Frame 2: onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg (guides over water). Frame 3: onedrive/SCR-ST12-Ci-branding-.JPG + ST OR ST-CI.",
-                      "approvalNotes":  "ST13-Ci is Ã‚Â£399.99 on the shop. Do not put price on the story unless they ask.",
+                      "approvalNotes":  "ST13-Ci is Ãƒâ€šÃ‚Â£399.99 on the shop. Do not put price on the story unless they ask.",
                       "assets":  [
                                      "media/products/onedrive/ST12-Ci-set-up-2-.jpg",
                                      "media/products/onedrive/SCR-ST12-Guides-Ti-forged-Air.jpg",
@@ -311,17 +311,17 @@
                                                       "instagram":  {
                                                                         "decision":  "approved",
                                                                         "changes":  "",
-                                                                        "decidedAt":  "2026-09-12T21:25:21.3293636Z"
+                                                                        "decidedAt":  "2026-09-12T22:15:09.5933591Z"
                                                                     },
                                                       "facebook":  {
                                                                        "decision":  "approved",
                                                                        "changes":  "",
-                                                                       "decidedAt":  "2026-09-12T21:25:21.3293636Z"
+                                                                       "decidedAt":  "2026-09-12T22:15:09.5993635Z"
                                                                    },
                                                       "tiktok":  {
                                                                      "decision":  "approved",
                                                                      "changes":  "",
-                                                                     "decidedAt":  "2026-09-12T21:25:21.3378123Z"
+                                                                     "decidedAt":  "2026-09-12T22:15:09.6003870Z"
                                                                  }
                                                   },
                                      "decision":  "approved",
@@ -354,7 +354,7 @@
                                    ],
                       "cta":  "Which length are you on?",
                       "mediaNotes":  "4:5 crop of media/products/onedrive/SCR-ST12-set-up.jpg (bank, ST12 branding). Optional carousel: then onedrive/ST12-1-.jpg. On-screen: ST12 - 12FT 3.5LB. Do not use grey studio ST12 hero/reel-seat shots.",
-                      "approvalNotes":  "ST12 is Ã‚Â£345.99. Caption does not need the price.",
+                      "approvalNotes":  "ST12 is Ãƒâ€šÃ‚Â£345.99. Caption does not need the price.",
                       "assets":  [
                                      "media/products/onedrive/SCR-ST12-set-up.jpg",
                                      "media/products/onedrive/ST12-1-.jpg"
@@ -364,12 +364,12 @@
                                                       "facebook":  {
                                                                        "decision":  "approved",
                                                                        "changes":  "",
-                                                                       "decidedAt":  "2026-09-12T21:25:21.3420480Z"
+                                                                       "decidedAt":  "2026-09-12T22:15:09.6025845Z"
                                                                    },
                                                       "instagram":  {
                                                                         "decision":  "approved",
                                                                         "changes":  "",
-                                                                        "decidedAt":  "2026-09-12T21:25:21.3420480Z"
+                                                                        "decidedAt":  "2026-09-12T22:15:09.6035836Z"
                                                                     }
                                                   },
                                      "decision":  "approved",
@@ -412,20 +412,20 @@
                                                       "instagram":  {
                                                                         "decision":  "approved",
                                                                         "changes":  "",
-                                                                        "decidedAt":  "2026-09-12T21:25:21.3455786Z"
+                                                                        "decidedAt":  "2026-09-12T22:15:09.6046048Z"
                                                                     },
                                                       "tiktok":  {
-                                                                     "decision":  null,
+                                                                     "decision":  "approved",
                                                                      "changes":  "",
-                                                                     "decidedAt":  null
+                                                                     "decidedAt":  "2026-09-12T22:15:09.6068116Z"
                                                                  },
                                                       "facebook":  {
-                                                                       "decision":  null,
+                                                                       "decision":  "approved",
                                                                        "changes":  "",
-                                                                       "decidedAt":  null
+                                                                       "decidedAt":  "2026-09-12T22:15:09.6087770Z"
                                                                    }
                                                   },
-                                     "decision":  null,
+                                     "decision":  "approved",
                                      "changes":  "",
                                      "round":  2,
                                      "appliedAt":  "2026-09-12T21:28:04.1011234Z",
@@ -463,17 +463,17 @@
                       "review":  {
                                      "channels":  {
                                                       "instagram":  {
-                                                                        "decision":  null,
+                                                                        "decision":  "approved",
                                                                         "changes":  "",
-                                                                        "decidedAt":  null
+                                                                        "decidedAt":  "2026-09-12T22:15:09.6097756Z"
                                                                     },
                                                       "facebook":  {
                                                                        "decision":  "approved",
                                                                        "changes":  "",
-                                                                       "decidedAt":  "2026-09-12T21:25:21.3455786Z"
+                                                                       "decidedAt":  "2026-09-12T22:15:09.6119479Z"
                                                                    }
                                                   },
-                                     "decision":  null,
+                                     "decision":  "approved",
                                      "changes":  "",
                                      "round":  2,
                                      "appliedAt":  "2026-09-12T21:28:04.1209696Z",
