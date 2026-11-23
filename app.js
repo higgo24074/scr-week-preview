@@ -287,7 +287,7 @@ function ensureReview(post) {
 }
 
 function reviewChannels(post) {
-  const list = (post.channels || []).filter((id) => id === "instagram" || id === "facebook" || id === "tiktok");
+  const list = (post.channels || []).filter((id) => id === "instagram" || id === "facebook");
   return list.length ? list : ["instagram"];
 }
 
@@ -408,15 +408,17 @@ function handleFor(channel) {
 }
 
 function storyFrames(post, channel) {
-  const assets = post.assets && post.assets.length ? post.assets : [""];
-  const lines = captionFor(post, channel)
+  const src = (post.assets && post.assets[0]) || "";
+  const first = captionFor(post, channel)
     .split("\n")
     .map((l) => l.trim())
-    .filter((l) => /^Frame\s+\d/i.test(l));
-  return assets.map((src, i) => ({
-    src: assetUrl(src),
-    text: publicCopy((lines[i] || "").replace(/^Frame\s+\d+\s*:\s*/i, "") || post.title),
-  }));
+    .filter(Boolean)[0];
+  return [
+    {
+      src: assetUrl(src),
+      text: publicCopy((first || post.title || "").replace(/^Frame\s+\d+\s*:\s*/i, "")),
+    },
+  ];
 }
 
 function igFeed(post) {
@@ -441,7 +443,7 @@ function igStory(post) {
   return `<div class="device ig story-phone" data-story="${id}">
     <div class="device-bar">Instagram story</div>
     <div class="story-screen" data-story-stage="${id}">
-      <div class="story-pips">${frames.map((_, i) => `<i class="${i === 0 ? "on" : ""}"></i>`).join("")}</div>
+      ${frames.length > 1 ? `<div class="story-pips">${frames.map((_, i) => `<i class="${i === 0 ? "on" : ""}"></i>`).join("")}</div>` : ""}
       <div class="story-head"><span class="ig-avatar"></span> ${esc(handle)}</div>
       ${frames
         .map(
@@ -449,7 +451,6 @@ function igStory(post) {
             `<figure class="story-frame ${i === 0 ? "on" : ""}"><img src="${esc(f.src)}" alt="" /><figcaption>${esc(f.text)}</figcaption></figure>`
         )
         .join("")}
-      <p class="tiny story-hint">Tap the photo to see the next frame</p>
     </div>
   </div>`;
 }
@@ -513,7 +514,7 @@ function renderPreview() {
     <div class="banner preview-banner">
       <div>
         <h2>Week of ${esc(week.weekStart || "-")} - as it will look</h2>
-        <p>Accept or Reject sits under every Instagram, Facebook, and TikTok mock. Rejecting one does not change the others. A follow-up text is sent only after every item has a decision, and only if something was rejected.</p>
+        <p>Accept or Reject sits under every Instagram and Facebook mock. Rejecting one does not change the others. A follow-up text is sent only after every item has a decision, and only if something was rejected.</p>
         <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " - " + remaining + " left" : " - all decided"}</p>
         ${reviewFlash ? `<p class="tiny">${esc(reviewFlash)}</p>` : ""}
         <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " - week text already sent" : ""} - test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>

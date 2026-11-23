@@ -11,7 +11,7 @@
     "schedule": "Every Monday 09:00 Europe/London",
     "onedriveAccount": "info@southcoastrods.onmicrosoft.com",
     "rule": "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com. Pull new media@ catch reports only — never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS both approvers. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
-    "smsTemplate": "SCR desk — week of {weekStart}. {count} posts/stories planned: {titles}. Reply APPROVE for the whole week, or REJECT and what to change.",
+    "smsTemplate": "SCR desk — week of {weekStart}. {count} posts/stories planned. Reply APPROVE for the whole week, or REJECT and what to change.",
     "week": {
       "weekStart": "2026-11-23",
       "status": "awaiting",
@@ -181,7 +181,7 @@
     },
     {
       "id": "p-story-st13",
-      "title": "Stories: ST13 product — three frames",
+      "title": "Story: ST13",
       "pillar": "craft",
       "format": "story",
       "status": "draft",
@@ -192,7 +192,7 @@
       ],
       "body": "ST13. 13ft 3.75lb. The casting tool in the range — carp rod first, distance when you need it. Cast over 200 metres on the field. Forgiveness in the tip so you are not bumping them under the rod.",
       "variants": {
-        "instagram": "Frame 1: ST13 · 13ft 3.75lb\nFrame 2: Japanese Toray carbon. 1k reel seat.\nFrame 3: Not a light-lead through-action rod. ST10, ST12 or ST13?\n\nShop ST13: https://southcoastrods.com/products/scr-st13-carp-rods\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
+        "instagram": "ST13. 13ft 3.75lb. The casting tool.\n\nCarp rod first. Distance when you need it.\n\nShop ST13: https://southcoastrods.com/products/scr-st13-carp-rods\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
         "facebook": "ST13 — 13ft 3.75lb, the casting tool in the SCR range.\n\nCarp rod first. Distance when you ask for it. The blank has been cast over 200 metres on the field, with a special taper that still forgives under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\nShop ST13: https://southcoastrods.com/products/scr-st13-carp-rods\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
       },
       "hashtags": [
@@ -204,12 +204,10 @@
         "st13"
       ],
       "cta": "ST10, ST12 or ST13?",
-      "mediaNotes": "9:16 stories. Crop from media/products/st13-hero.jpg (frame 1), st13-reel-seat.jpg (frame 2), st13-tip.jpg (frame 3). On-screen: ST13 / 13FT 3.75LB then 1K CARBON SEAT then WHICH LENGTH?. Hold each frame 4–5s. Tag shop product ST13 on the photo.",
+      "mediaNotes": "One 9:16 crop of media/products/st13-hero.jpg. On-screen: ST13 · 13FT 3.75LB. Tag shop product ST13.",
       "approvalNotes": "Official shop photos. Price £369.99 only if asked — this story does not need a price.",
       "assets": [
-        "media/products/st13-hero.jpg",
-        "media/products/st13-reel-seat.jpg",
-        "media/products/st13-tip.jpg"
+        "media/products/st13-hero.jpg"
       ]
     },
     {
@@ -235,17 +233,15 @@
         "st13"
       ],
       "cta": "Shop ST13: https://southcoastrods.com/products/scr-st13-carp-rods",
-      "mediaNotes": "9:16, 12–15s. Shot 1 (0–1s): st13-hero.jpg, on-screen ST13. Shot 2: st13-blank.jpg pan. Shot 3: reel seat. Shot 4: tip. Optional: existing ST13 Facebook/YouTube casting clip if you have the file. No trending audio over the blank. Tag shop product ST13 on Instagram and Facebook.",
+      "mediaNotes": "One still for Preview: media/products/st13-hero.jpg, 9:16 crop, on-screen ST13. Use a real casting clip later if they have the file. Tag shop product ST13.",
       "approvalNotes": "200 metres is a casting-field figure from the ST13 product page — keep that wording. Do not claim a customer hit 200m unless they said so.",
       "assets": [
-        "media/products/st13-hero.jpg",
-        "media/products/st13-blank.jpg",
-        "media/products/st13-reel-seat.jpg"
+        "media/products/st13-hero.jpg"
       ]
     },
     {
       "id": "p-story-st-ci",
-      "title": "Stories: ST-Ci Titanium TZ guides",
+      "title": "Story: ST-Ci Titanium TZ guides",
       "pillar": "craft",
       "format": "story",
       "status": "draft",
@@ -256,7 +252,7 @@
       ],
       "body": "New for 2026: ST-Ci. Same Special Taper blank. Titanium TZ guides with a ceramic insert — snag-less, corrosion proof, built for heavy use on braid or low-diameter mono. ST if you want the lightest Air guides. ST-Ci if you want the most durable set we have tested.",
       "variants": {
-        "instagram": "Frame 1: ST-Ci · new for 2026\nFrame 2: Titanium TZ. Ceramic insert. Any mainline.\nFrame 3: Same ST blank. Tougher guides. ST or ST-Ci?\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods",
+        "instagram": "ST-Ci. New for 2026.\n\nSame ST blank. Titanium TZ. Built for heavy use.\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods",
         "facebook": "ST-Ci is new for 2026.\n\nSame SCR Special Taper blank. The difference is the guide set — Titanium TZ with a traditional ceramic insert. In testing they added distance, smoothed the retrieve, and took heavy use on braid and low-diameter mono.\n\nWant the lightest Air guides? Stay on ST. Want the most durable set we have tested? That is ST-Ci.\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods"
       },
       "hashtags": [
@@ -267,12 +263,10 @@
         "st13-ci"
       ],
       "cta": "ST or ST-Ci?",
-      "mediaNotes": "9:16. Frame 1: st13-hero.jpg with ST-CI on screen. Frame 2: media/products/st-ci-titanium-guides.webp. Frame 3: st13-reel-seat.jpg + ST OR ST-CI. Tag shop product ST13-Ci on Instagram and Facebook.",
+      "mediaNotes": "One 9:16 crop of media/products/st-ci-titanium-guides.webp. On-screen: ST-CI · NEW FOR 2026. Tag shop product ST13-Ci.",
       "approvalNotes": "ST13-Ci is £399.99 on the shop. Do not put price on the story unless they ask.",
       "assets": [
-        "media/products/st13-hero.jpg",
-        "media/products/st-ci-titanium-guides.webp",
-        "media/products/st13-reel-seat.jpg"
+        "media/products/st-ci-titanium-guides.webp"
       ]
     },
     {
@@ -300,7 +294,7 @@
         "st12"
       ],
       "cta": "Which length are you on?",
-      "mediaNotes": "4:5 crop of media/products/st12-hero.jpg. Optional carousel: hero, then ST13 hero for the comparison. On-screen: ST12 · 12FT 3.5LB. Tag shop product ST12 on Instagram and Facebook.",
+      "mediaNotes": "One 4:5 crop of media/products/st12-hero.jpg. On-screen: ST12 · 12FT 3.5LB. Tag shop product ST12.",
       "approvalNotes": "ST12 is £345.99. Caption does not need the price.",
       "assets": [
         "media/products/st12-hero.jpg"
@@ -327,8 +321,8 @@
         "#SCRrods"
       ],
       "cta": "Follow the squad updates on our page",
-      "mediaNotes": "Bank shot of the ST range only — media/products/onedrive/st13-trio.jpg. Do not generate fake team photos. Do not invent match results.",
-      "approvalNotes": "Sponsorship is public (Angling Trust, Feb 2025, through 2027). Do not claim a 2026 gold unless they confirm it.",
+      "mediaNotes": "One bank shot of the ST range — media/products/onedrive/st13-trio.jpg. Do not generate fake team photos. Do not invent match results.",
+      "approvalNotes": "Sponsorship is public (Angling Trust, Feb 2025, through 2027). Do not call anyone Assistant Manager. Do not name Graham or Stuart on this post. Do not claim a 2026 gold unless they confirm it.",
       "assets": [
         "media/products/onedrive/st13-trio.jpg"
       ]
@@ -346,7 +340,7 @@
       ],
       "body": "If you have had a fish on an SCR rod, we want the catch report. Photo, weight, what happened. Send it to media@southcoastrods.com and we will put it on the desk.",
       "variants": {
-        "instagram": "Frame 1: GOT A FISH ON SCR?\nFrame 2: Photo + weight + the story\nFrame 3: media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
+        "instagram": "Got a fish on SCR?\n\nPhoto, weight, and the story to media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
         "facebook": "Catch reports keep this page alive.\n\nIf you have had one on an SCR rod, send the photo, the weight, and what happened to media@southcoastrods.com — we will get it on Instagram and Facebook.\n\n#southcoastrods #SCRrods #carpstory"
       },
       "hashtags": [
@@ -355,7 +349,7 @@
         "#carpstory"
       ],
       "cta": "Email media@southcoastrods.com",
-      "mediaNotes": "9:16 type-led stories on a crop of st13-hero.jpg, dark overlay, large type. Facebook can be the same graphic as a 4:5 still.",
+      "mediaNotes": "One 9:16 crop of st13-hero.jpg, dark overlay, large type: GOT A FISH ON SCR? Facebook can use the same graphic as a 4:5 still.",
       "approvalNotes": "This is the standing invite so the inbox actually fills.",
       "assets": [
         "media/products/st13-hero.jpg"
