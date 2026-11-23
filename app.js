@@ -516,7 +516,7 @@ function renderPreview() {
         <p>Accept or Reject sits under every Instagram, Facebook, and TikTok mock. Rejecting one does not change the others. A follow-up text is sent only after every item has a decision, and only if something was rejected.</p>
         <p class="review-progress">${progress.decided} of ${progress.total} decided${remaining ? " - " + remaining + " left" : " - all decided"}</p>
         ${reviewFlash ? `<p class="tiny">${esc(reviewFlash)}</p>` : ""}
-        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " - texts already sent to Graham and Stuart" : ""} - test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
+        <p class="tiny">SMS status: ${esc(status)}${week.smsSentAt ? " - week text already sent" : ""} - test mode ${state.testMode ? "on (nothing uploads)" : "off"}</p>
       </div>
     </div>
     ${
@@ -713,7 +713,7 @@ async function maybeCompleteReview() {
     await saveStateNow();
     try {
       await fetch("/api/review/complete", { method: "POST" });
-      reviewFlash = "Changes applied. A follow-up Preview text is queued for Graham and Stuart.";
+      reviewFlash = "Changes applied. A follow-up Preview text is queued.";
     } catch (e) {
       reviewFlash = "Changes applied. Start the Windows task SCR Preview SMS so the follow-up text goes out.";
     }

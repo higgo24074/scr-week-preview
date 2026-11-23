@@ -10,30 +10,29 @@
     "textBoth": true,
     "schedule": "Every Monday 09:00 Europe/London",
     "onedriveAccount": "info@southcoastrods.onmicrosoft.com",
-    "rule": "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com. Pull new media@ catch reports only — never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS Graham and Stuart. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
+    "rule": "Every Monday at 9am UK this run fires on its own (same pattern as the New Order Agent). Trawl company OneDrive for info@southcoastrods.onmicrosoft.com. Pull new media@ catch reports only — never reuse a catch that has already been posted. If there are no new reports, fill the week from existing OneDrive SCR/ST pictures. Then SMS both approvers. One APPROVE covers every post that week. On REJECT, apply the SMS changes and ask again. Do not schedule until one of them approves.",
     "smsTemplate": "SCR desk — week of {weekStart}. {count} posts/stories planned: {titles}. Reply APPROVE for the whole week, or REJECT and what to change.",
     "week": {
       "weekStart": "2026-11-23",
       "status": "awaiting",
-      "smsSentAt": "2026-11-23T18:49:15.743Z",
+      "smsSentAt": "2026-11-23T18:53:02.231Z",
       "signOff": null,
-      "test": true
+      "test": true,
+      "hostedPreviewUrl": "https://higgo24074.github.io/scr-week-preview/"
     },
     "approvers": [
       {
         "id": "graham",
-        "name": "Graham Mabey",
+        "name": "",
         "phone": ""
       },
       {
         "id": "stuart",
-        "name": "Stuart Higgs",
+        "name": "",
         "phone": ""
       }
     ],
-    "unassignedCompanyMobiles": [],
-    "onedriveFolder": "",
-    "smsReplyTo": "+447460091242"
+    "unassignedCompanyMobiles": []
   },
   "brand": {
     "name": "South Coast Rods",
@@ -83,13 +82,13 @@
       "id": "tiktok",
       "name": "TikTok",
       "handle": "@south_coast_rods",
-      "status": "active",
-      "cadence": "4 posts / week",
+      "status": "paused",
+      "cadence": "off",
       "bestTimes": [
         "12:00",
         "19:00"
       ],
-      "notes": "Native recut of the IG reel. Fish or blank in the first second. Sparse hashtags."
+      "notes": "Not used. Do not draft or schedule TikTok."
     },
     {
       "id": "facebook",
@@ -163,13 +162,11 @@
       "status": "idea",
       "scheduledFor": "2026-09-13T18:00:00",
       "channels": [
-        "instagram",
-        "tiktok"
+        "instagram"
       ],
       "body": "Turning up to his syndicate blind with no shows and only the wind to go on, Craig Startin managed to winkle out this stunning 36lb stunner!",
       "variants": {
-        "instagram": "No shows. Just the wind.\n\nCraig Startin turned up to his syndicate blind and still winkled out this 36lb stunner.\n\nGot a fish on an SCR rod? Send the photo and the details to media@southcoastrods.com\n\n#southcoastrods #SCRrods #bigcarp #carpstory",
-        "tiktok": "36lb. Syndicate. Blind session.\n\nCraig Startin had no shows — only the wind — and still found this one.\n\nSend your catch to media@southcoastrods.com\n\n#southcoastrods #SCRrods #bigcarp"
+        "instagram": "No shows. Just the wind.\n\nCraig Startin turned up to his syndicate blind and still winkled out this 36lb stunner.\n\nGot a fish on an SCR rod? Send the photo and the details to media@southcoastrods.com\n\n#southcoastrods #SCRrods #bigcarp #carpstory"
       },
       "hashtags": [
         "#southcoastrods",
@@ -178,8 +175,8 @@
         "#carpstory"
       ],
       "cta": "Send your catch to media@southcoastrods.com",
-      "mediaNotes": "Use Craig's Facebook photo (already on facebook.com/southcoastrods, 11 Sep). IG: 4:5 crop, fish and face clear, on-screen 36LB. TikTok: 9:16, open on the fish for 1s, then Craig. Do not name a rod model. Do not name the venue.",
-      "approvalNotes": "Already live on Facebook 11 Sep 2026. Instagram and TikTok only — confirm it has not already gone on those two before posting. Photo is still on the Facebook page; save a local copy into inbox/catch-reports if you want it in the repo.",
+      "mediaNotes": "Use Craig's Facebook photo (already on facebook.com/southcoastrods, 11 Sep). IG: 4:5 crop, fish and face clear, on-screen 36LB. Do not name a rod model. Do not name the venue.",
+      "approvalNotes": "Already live on Facebook 11 Sep 2026. Instagram only — confirm it has not already gone on those two before posting. Photo is still on the Facebook page; save a local copy into inbox/catch-reports if you want it in the repo.",
       "assets": []
     },
     {
@@ -217,19 +214,17 @@
     },
     {
       "id": "p-reel-st13-cast",
-      "title": "Reel/TikTok: ST13 is the casting tool",
+      "title": "Reel: ST13 is the casting tool",
       "pillar": "craft",
       "format": "reel",
       "status": "draft",
       "scheduledFor": "2026-11-24T18:00:00",
       "channels": [
-        "instagram",
-        "tiktok"
+        "instagram"
       ],
       "body": "The ST13 is the casting tool in the range. Carp fishing rod first — with the backbone to hit range when you need it. Over 200 metres on the casting field. Semi-fast special taper, progressive curve, power in the butt, forgiveness in the tip.",
       "variants": {
-        "instagram": "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgives them under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\nShop ST13: https://southcoastrods.com/products/scr-st13-carp-rods\n\n#southcoastrodsST13 #SCRrods #southcoastrods",
-        "tiktok": "ST13. 13ft 3.75lb.\n\nCasting tool. Carp rod first.\n200m+ on the field.\nForgiveness still in the tip.\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
+        "instagram": "Stop calling it just a distance rod.\n\nST13 is a carp rod that can go long. 13ft 3.75lb. Over 200 metres on the field. Still forgives them under the tip.\n\nIf you want a through-action rod for light leads, this is not it.\n\nShop ST13: https://southcoastrods.com/products/scr-st13-carp-rods\n\n#southcoastrodsST13 #SCRrods #southcoastrods"
       },
       "hashtags": [
         "#southcoastrodsST13",
@@ -257,14 +252,12 @@
       "scheduledFor": "2026-11-25T11:00:00",
       "channels": [
         "instagram",
-        "facebook",
-        "tiktok"
+        "facebook"
       ],
       "body": "New for 2026: ST-Ci. Same Special Taper blank. Titanium TZ guides with a ceramic insert — snag-less, corrosion proof, built for heavy use on braid or low-diameter mono. ST if you want the lightest Air guides. ST-Ci if you want the most durable set we have tested.",
       "variants": {
         "instagram": "Frame 1: ST-Ci · new for 2026\nFrame 2: Titanium TZ. Ceramic insert. Any mainline.\nFrame 3: Same ST blank. Tougher guides. ST or ST-Ci?\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods",
-        "facebook": "ST-Ci is new for 2026.\n\nSame SCR Special Taper blank. The difference is the guide set — Titanium TZ with a traditional ceramic insert. In testing they added distance, smoothed the retrieve, and took heavy use on braid and low-diameter mono.\n\nWant the lightest Air guides? Stay on ST. Want the most durable set we have tested? That is ST-Ci.\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods",
-        "tiktok": "Same ST blank.\nNew for 2026: Titanium TZ guides.\n\nST-Ci. Built for heavy use.\n\n#southcoastrods #SCRrods"
+        "facebook": "ST-Ci is new for 2026.\n\nSame SCR Special Taper blank. The difference is the guide set — Titanium TZ with a traditional ceramic insert. In testing they added distance, smoothed the retrieve, and took heavy use on braid and low-diameter mono.\n\nWant the lightest Air guides? Stay on ST. Want the most durable set we have tested? That is ST-Ci.\n\nShop ST13-Ci: https://southcoastrods.com/products/scr-st13-ci-carp-rods\n\n#southcoastrods #SCRrods"
       },
       "hashtags": [
         "#southcoastrods",
@@ -274,7 +267,7 @@
         "st13-ci"
       ],
       "cta": "ST or ST-Ci?",
-      "mediaNotes": "9:16. Frame 1: st13-hero.jpg with ST-CI on screen. Frame 2: media/products/st-ci-titanium-guides.webp. Frame 3: st13-reel-seat.jpg + ST OR ST-CI. TikTok can be a 8s cut of the same three frames. Tag shop product ST13-Ci on Instagram and Facebook.",
+      "mediaNotes": "9:16. Frame 1: st13-hero.jpg with ST-CI on screen. Frame 2: media/products/st-ci-titanium-guides.webp. Frame 3: st13-reel-seat.jpg + ST OR ST-CI. Tag shop product ST13-Ci on Instagram and Facebook.",
       "approvalNotes": "ST13-Ci is £399.99 on the shop. Do not put price on the story unless they ask.",
       "assets": [
         "media/products/st13-hero.jpg",
@@ -322,23 +315,23 @@
       "scheduledFor": "2026-11-27T19:00:00",
       "channels": [
         "instagram",
-        "tiktok",
         "facebook"
       ],
-      "body": "South Coast Rods are official sponsors of Carp Team England. Graham Mabey is Assistant Manager and a two-time World Champion. We are on the bank with the squad — not just on the kit list.",
+      "body": "South Coast Rods are official sponsors of Carp Team England. Same kit the squad take to the match — on the bank with the team, not just on the kit list.",
       "variants": {
-        "instagram": "Official sponsors of Carp Team England.\n\nGraham is Assistant Manager. Two-time World Champion. Stu builds the rods.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
-        "tiktok": "Carp Team England.\nOfficial kit: SCR.\n\nGraham's on the bank. Stu built the blanks.\n\n#southcoastrods #SCRrods",
-        "facebook": "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step — Graham as Assistant Manager, Stu on the blanks, and the rest of us on the bank for the updates.\n\n#southcoastrods #SCRrods"
+        "instagram": "Official sponsors of Carp Team England.\n\nSame kit the squad take to the match.\n\n#southcoastrods #SCRrods",
+        "facebook": "Proud to be official sponsors of Carp Team England.\n\nA lot of the squad were already on SCR before the deal. Supporting the whole team was the obvious next step.\n\n#southcoastrods #SCRrods"
       },
       "hashtags": [
         "#southcoastrods",
         "#SCRrods"
       ],
       "cta": "Follow the squad updates on our page",
-      "mediaNotes": "Use a real CTE / SCR photo if you have one in the inbox. Until then: three-rod Facebook cover crop (rods on buzzers) plus logo. Do not generate fake team photos. Do not invent match results.",
+      "mediaNotes": "Bank shot of the ST range only — media/products/onedrive/st13-trio.jpg. Do not generate fake team photos. Do not invent match results.",
       "approvalNotes": "Sponsorship is public (Angling Trust, Feb 2025, through 2027). Do not claim a 2026 gold unless they confirm it.",
-      "assets": []
+      "assets": [
+        "media/products/onedrive/st13-trio.jpg"
+      ]
     },
     {
       "id": "p-invite-media-inbox",
@@ -354,7 +347,7 @@
       "body": "If you have had a fish on an SCR rod, we want the catch report. Photo, weight, what happened. Send it to media@southcoastrods.com and we will put it on the desk.",
       "variants": {
         "instagram": "Frame 1: GOT A FISH ON SCR?\nFrame 2: Photo + weight + the story\nFrame 3: media@southcoastrods.com\n\n#southcoastrods #SCRrods #carpstory",
-        "facebook": "Catch reports keep this page alive.\n\nIf you have had one on an SCR rod, send the photo, the weight, and what happened to media@southcoastrods.com — we will get it on Instagram, Facebook and TikTok.\n\n#southcoastrods #SCRrods #carpstory"
+        "facebook": "Catch reports keep this page alive.\n\nIf you have had one on an SCR rod, send the photo, the weight, and what happened to media@southcoastrods.com — we will get it on Instagram and Facebook.\n\n#southcoastrods #SCRrods #carpstory"
       },
       "hashtags": [
         "#southcoastrods",
